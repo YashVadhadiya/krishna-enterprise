@@ -9,15 +9,17 @@
     .dashboard { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
     h1 { color: #333; }
     .nav { margin-bottom: 20px; }
-    .btn { padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; text-decoration: none; display: inline-block; }
+    .btn { padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; text-decoration: none; display: inline-block; margin-right: 10px; }
     .btn-primary { background: #007bff; color: white; }
     .btn-danger { background: #dc3545; color: white; }
+    .btn-secondary { background: #6c757d; color: white; }
   </style>
 </head>
 <body>
   <div class="dashboard">
     <div class="nav">
       <a href="/admin/products-page" class="btn btn-primary">Products</a>
+      <a href="/admin/settings-page" class="btn btn-secondary">Settings</a>
       <button class="btn btn-danger" onclick="logout()">Logout</button>
     </div>
     <h1 id="message">Loading...</h1>

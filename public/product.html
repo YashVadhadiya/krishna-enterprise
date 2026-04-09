@@ -3,14 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Product Details</title>
+  <title>Product Details - Krishna Enterprises</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { font-family: Arial, sans-serif; background: #f5f5f5; }
-    header { background: #333; color: white; padding: 20px; text-align: center; }
-    header h1 { margin-bottom: 10px; }
+    header { background: #333; color: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; }
+    header h1 { font-size: 24px; }
     header nav a { color: white; text-decoration: none; margin: 0 15px; }
     header nav a:hover { text-decoration: underline; }
+    .cart-btn { background: #28a745; color: white; padding: 8px 15px; border: none; border-radius: 4px; cursor: pointer; position: relative; }
+    .cart-count { position: absolute; top: -8px; right: -8px; background: #dc3545; border-radius: 50%; width: 20px; height: 20px; font-size: 12px; display: flex; align-items: center; justify-content: center; }
     .container { max-width: 800px; margin: 0 auto; padding: 20px; }
     .product-detail { background: white; border-radius: 8px; padding: 30px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
     .product-detail .main-image { width: 100%; max-height: 400px; object-fit: cover; border-radius: 8px; margin-bottom: 20px; }
@@ -24,29 +26,79 @@
     .error { text-align: center; padding: 50px; color: #dc3545; }
     .back-link { display: inline-block; margin-bottom: 20px; color: #007bff; text-decoration: none; }
     .back-link:hover { text-decoration: underline; }
+    .qty-control { display: flex; align-items: center; gap: 15px; margin: 20px 0; }
+    .qty-control label { font-weight: bold; }
+    .qty-control button { width: 35px; height: 35px; border: 1px solid #ddd; background: white; cursor: pointer; border-radius: 4px; font-size: 18px; }
+    .qty-control button:hover { background: #f0f0f0; }
+    .qty-control .remove-btn { width: auto; padding: 0 15px; background: #dc3545; color: white; border: none; }
+    .qty-control .remove-btn:hover { background: #c82333; }
+    .qty-control span { font-size: 20px; font-weight: bold; min-width: 40px; text-align: center; }
+    .in-cart-label { font-size: 14px; color: #28a745; margin-bottom: 5px; font-weight: bold; }
+    .btn-group { display: flex; gap: 15px; margin-top: 20px; flex-wrap: wrap; }
+    .btn { padding: 12px 25px; border: none; border-radius: 4px; cursor: pointer; text-decoration: none; display: inline-block; font-size: 14px; }
+    .btn-primary { background: #007bff; color: white; }
+    .btn-primary:hover { background: #0056b3; }
+    .btn-whatsapp { background: #25D366; color: white; }
+    .btn-whatsapp:hover { background: #20b558; }
+    .btn-cart { background: #28a745; color: white; }
+    .btn-cart:hover { background: #218838; }
   </style>
 </head>
 <body>
   <header>
-    <h1>Product Details</h1>
+    <h1>Krishna Enterprises</h1>
     <nav>
       <a href="/">Home</a>
       <a href="/admin">Admin</a>
+      <button class="cart-btn" onclick="window.open('/', '_blank')">
+        Cart
+        <span class="cart-count" id="cartCount">0</span>
+      </button>
     </nav>
   </header>
   
   <div class="container">
-    <a href="/" class="back-link">&larr; Back to Products</a>
+    <a href="/" class="back-link" target="_blank">&larr; Back to Products</a>
     <div class="product-detail" id="productDetail">
       <div class="loading">Loading product...</div>
     </div>
   </div>
 
   <script>
+    let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+    let currentProduct = null;
+    let whatsappNumber = '';
+    let selectedQty = 1;
+
     function getSlugFromUrl() {
       const path = window.location.pathname;
       const parts = path.split('/');
       return parts[parts.length - 1] || parts[parts.length - 2];
+    }
+
+    function saveCart() {
+      localStorage.setItem('cart', JSON.stringify(cart));
+      updateCartCount();
+    }
+
+    function updateCartCount() {
+      const total = cart.reduce((sum, p) => sum + (p.quantity || 1), 0);
+      document.getElementById('cartCount').textContent = total;
+    }
+
+    function getCartItem() {
+      if (!currentProduct) return null;
+      return cart.find(p => p.id === currentProduct.id);
+    }
+
+    async function loadSettings() {
+      try {
+        const res = await fetch('/api/settings');
+        const data = await res.json();
+        whatsappNumber = data.whatsapp_number || '';
+      } catch (err) {
+        console.error(err);
+      }
     }
 
     async function loadProduct() {
@@ -62,8 +114,14 @@
           document.getElementById('productDetail').innerHTML = '<div class="error">Product not found</div>';
           return;
         }
-        const product = await res.json();
-        const images = typeof product.images === 'string' ? JSON.parse(product.images) : product.images;
+        currentProduct = await res.json();
+        
+        const inCart = getCartItem();
+        const cartQty = inCart ? inCart.quantity : 0;
+        const showInCart = cartQty > 0;
+        selectedQty = showInCart ? cartQty : 1;
+        
+        const images = typeof currentProduct.images === 'string' ? JSON.parse(currentProduct.images) : currentProduct.images;
         
         if (!images.length) {
           document.getElementById('productDetail').innerHTML = '<div class="error">No images available</div>';
@@ -75,19 +133,127 @@
           `<img src="${img}" onclick="document.getElementById('mainImage').src='${img}'" alt="Product image ${i+1}">`
         ).join('');
 
+        let buttonsHtml = '';
+        if (whatsappNumber) {
+          const msg = `Hi Krishna Enterprises, I'm interested in: ${currentProduct.name} (SKU: ${currentProduct.sku}). Please share the price.`;
+          buttonsHtml = `
+            <div class="btn-group">
+              <a href="https://wa.me/${whatsappNumber}?text=${encodeURIComponent(msg)}" class="btn btn-whatsapp" target="_blank">Get Quote on WhatsApp</a>
+              <button class="btn btn-cart" onclick="addToCart()">${showInCart ? 'Add More' : 'Add to Cart'}</button>
+              <a href="/" class="btn btn-primary" target="_blank">Back to Home</a>
+            </div>
+          `;
+        } else {
+          buttonsHtml = `
+            <div class="btn-group">
+              <button class="btn btn-cart" onclick="addToCart()">${showInCart ? 'Add More' : 'Add to Cart'}</button>
+              <a href="/" class="btn btn-primary" target="_blank">Back to Home</a>
+            </div>
+          `;
+        }
+
         document.getElementById('productDetail').innerHTML = `
-          <img id="mainImage" class="main-image" src="${mainImage}" alt="${product.name}">
-          <h2>${product.name}</h2>
-          <div class="sku"><strong>SKU:</strong> ${product.sku}</div>
-          <p class="description">${product.description || 'No description available'}</p>
+          <img id="mainImage" class="main-image" src="${mainImage}" alt="${currentProduct.name}">
+          <h2>${currentProduct.name}</h2>
+          <div class="sku"><strong>SKU:</strong> ${currentProduct.sku}</div>
+          <p class="description">${currentProduct.description || 'No description available'}</p>
           ${images.length > 1 ? `<div class="all-images">${allImagesHtml}</div>` : ''}
+          ${showInCart ? `<div class="in-cart-label">In Cart: ${cartQty} item(s)</div>` : ''}
+          <div class="qty-control">
+            <label>Quantity:</label>
+            <button onclick="changeQty(-1)">-</button>
+            <span id="qty">${selectedQty}</span>
+            <button onclick="changeQty(1)">+</button>
+            ${showInCart ? `<button class="remove-btn" onclick="removeFromCart()">Remove</button>` : ''}
+          </div>
+          ${buttonsHtml}
         `;
       } catch (err) {
         document.getElementById('productDetail').innerHTML = '<div class="error">Error loading product</div>';
       }
     }
 
-    loadProduct();
+    function changeQty(delta) {
+      const inCart = getCartItem();
+      
+      if (inCart) {
+        inCart.quantity += delta;
+        if (inCart.quantity < 1) {
+          removeFromCart();
+          return;
+        }
+        saveCart();
+        document.getElementById('qty').textContent = inCart.quantity;
+        updateInCartDisplay(inCart.quantity);
+      } else {
+        selectedQty += delta;
+        if (selectedQty < 1) selectedQty = 1;
+        document.getElementById('qty').textContent = selectedQty;
+      }
+    }
+
+    function updateInCartDisplay(qty) {
+      const inCartLabel = document.querySelector('.in-cart-label');
+      const cartBtn = document.querySelector('.btn-cart');
+      const removeBtn = document.querySelector('.remove-btn');
+      
+      if (inCartLabel) inCartLabel.textContent = `In Cart: ${qty} item(s)`;
+      if (cartBtn) cartBtn.textContent = 'Add More';
+      if (removeBtn) {
+        if (qty <= 1) {
+          removeBtn.remove();
+          cartBtn.textContent = 'Add to Cart';
+        }
+      }
+    }
+
+    function addToCart() {
+      if (!currentProduct) return;
+      
+      const inCart = getCartItem();
+      const qty = selectedQty;
+      
+      if (inCart) {
+        inCart.quantity += qty;
+      } else {
+        cart.push({ ...currentProduct, quantity: qty });
+      }
+      
+      saveCart();
+      reloadProductDisplay();
+      alert('Added ' + qty + ' item(s) to cart');
+    }
+
+    function removeFromCart() {
+      if (!currentProduct) return;
+      
+      const index = cart.findIndex(p => p.id === currentProduct.id);
+      if (index > -1) {
+        cart.splice(index, 1);
+        saveCart();
+        selectedQty = 1;
+        reloadProductDisplay();
+        alert('Removed from cart');
+      }
+    }
+
+    function reloadProductDisplay() {
+      const inCart = getCartItem();
+      const cartQty = inCart ? inCart.quantity : 0;
+      const showInCart = cartQty > 0;
+      
+      selectedQty = showInCart ? cartQty : 1;
+      document.getElementById('qty').textContent = selectedQty;
+      updateInCartDisplay(cartQty);
+      
+      const cartBtn = document.querySelector('.btn-cart');
+      if (cartBtn) {
+        cartBtn.textContent = showInCart ? 'Add More' : 'Add to Cart';
+      }
+    }
+
+    updateCartCount();
+    loadSettings().then(loadProduct);
   </script>
 </body>
 </html>

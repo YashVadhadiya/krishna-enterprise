@@ -75,6 +75,10 @@ app.get('/product/:slug', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'product.html'));
 });
 
+app.get('/cart', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'cart.html'));
+});
+
 app.get('/api/product/:slug', (req, res) => {
   const { slug } = req.params;
   const query = 'SELECT * FROM products WHERE slug = ? AND is_active = 1';
@@ -95,6 +99,25 @@ app.get('/admin/dashboard-page', (req, res) => {
 
 app.get('/admin/products-page', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'products.html'));
+});
+
+app.get('/admin/settings-page', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'settings.html'));
+});
+
+app.get('/api/settings', (req, res) => {
+  db.query('SELECT whatsapp_number FROM settings WHERE id = 1', (err, results) => {
+    if (err) return res.status(500).json({ message: 'Error fetching settings' });
+    res.json({ whatsapp_number: results[0]?.whatsapp_number || '' });
+  });
+});
+
+app.post('/api/settings', verifyToken, (req, res) => {
+  const { whatsapp_number } = req.body;
+  db.query('UPDATE settings SET whatsapp_number = ? WHERE id = 1', [whatsapp_number], (err) => {
+    if (err) return res.status(500).json({ message: 'Error saving settings' });
+    res.json({ success: true });
+  });
 });
 
 app.post('/admin/login', (req, res) => {

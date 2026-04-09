@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Settings - Admin</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; background: #f0f0f0; margin: 0; }
+    .header { display: flex; justify-content: space-between; align-items: center; background: white; padding: 15px 20px; border-radius: 8px; margin-bottom: 20px; }
+    h1 { margin: 0; }
+    .btn { padding: 8px 16px; border: none; border-radius: 4px; cursor: pointer; margin-left: 10px; }
+    .btn-primary { background: #007bff; color: white; }
+    .btn-logout { background: #6c757d; color: white; }
+    .settings-box { background: white; padding: 30px; border-radius: 8px; max-width: 500px; }
+    .form-group { margin-bottom: 20px; }
+    .form-group label { display: block; margin-bottom: 8px; font-weight: bold; }
+    .form-group input { width: 100%; padding: 10px; box-sizing: border-box; border: 1px solid #ddd; border-radius: 4px; }
+    .form-group .hint { font-size: 12px; color: #666; margin-top: 5px; }
+    .success { color: green; margin-top: 10px; }
+    .error { color: red; margin-top: 10px; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>Settings</h1>
+    <div>
+      <a href="/admin/dashboard-page" class="btn btn-primary">Dashboard</a>
+      <a href="/admin/products-page" class="btn btn-primary">Products</a>
+      <button class="btn btn-logout" onclick="logout()">Logout</button>
+    </div>
+  </div>
+  
+  <div class="settings-box">
+    <h2>WhatsApp Settings</h2>
+    <div class="form-group">
+      <label>WhatsApp Number</label>
+      <input type="text" id="whatsappNumber" placeholder="1234567890">
+      <div class="hint">Enter number with country code (e.g., 919999999999)</div>
+    </div>
+    <button class="btn btn-primary" onclick="saveSettings()">Save Settings</button>
+    <div id="message"></div>
+  </div>
+
+  <script>
+    const token = localStorage.getItem('adminToken');
+    if (!token) { window.location.href = '/admin'; }
+
+    async function loadSettings() {
+      try {
+        const res = await fetch('/api/settings');
+        const data = await res.json();
+        document.getElementById('whatsappNumber').value = data.whatsapp_number || '';
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    async function saveSettings() {
+      const whatsapp_number = document.getElementById('whatsappNumber').value.trim();
+      const messageDiv = document.getElementById('message');
+      
+      try {
+        const res = await fetch('/api/settings', {
+          method: 'POST',
+          headers: { 
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ whatsapp_number })
+        });
+        const data = await res.json();
+        
+        if (data.success) {
+          messageDiv.className = 'success';
+          messageDiv.textContent = 'Settings saved successfully!';
+        } else {
+          messageDiv.className = 'error';
+          messageDiv.textContent = data.message || 'Error saving settings';
+        }
+      } catch (err) {
+        messageDiv.className = 'error';
+        messageDiv.textContent = 'Error saving settings';
+      }
+    }
+
+    function logout() {
+      localStorage.removeItem('adminToken');
+      window.location.href = '/admin';
+    }
+
+    loadSettings();
+  </script>
+</body>
+</html>

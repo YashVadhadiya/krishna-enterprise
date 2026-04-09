@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cart - Krishna Enterprises</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: Arial, sans-serif; background: #f5f5f5; }
+    header { background: #333; color: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; }
+    header h1 { font-size: 24px; }
+    header nav a { color: white; text-decoration: none; margin: 0 15px; }
+    header nav a:hover { text-decoration: underline; }
+    .container { max-width: 1000px; margin: 0 auto; padding: 20px; }
+    .cart-container { background: white; border-radius: 8px; padding: 30px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+    .cart-container h2 { margin-bottom: 20px; }
+    .cart-item { display: flex; align-items: center; padding: 15px; border-bottom: 1px solid #eee; }
+    .cart-item:last-child { border-bottom: none; }
+    .cart-item img { width: 80px; height: 80px; object-fit: cover; border-radius: 4px; }
+    .cart-item-info { flex: 1; margin-left: 20px; }
+    .cart-item-info h3 { margin-bottom: 5px; color: #333; }
+    .cart-item-info .sku { font-size: 12px; color: #666; }
+    .cart-item-qty { display: flex; align-items: center; gap: 10px; margin: 0 20px; }
+    .cart-item-qty button { width: 30px; height: 30px; border: 1px solid #ddd; background: white; cursor: pointer; border-radius: 4px; font-size: 16px; }
+    .cart-item-qty button:hover { background: #f0f0f0; }
+    .cart-item-qty span { font-weight: bold; min-width: 30px; text-align: center; }
+    .cart-item-remove { background: #dc3545; color: white; border: none; padding: 8px 15px; border-radius: 4px; cursor: pointer; }
+    .cart-item-remove:hover { background: #c82333; }
+    .cart-empty { text-align: center; padding: 50px; color: #666; }
+    .cart-actions { margin-top: 20px; display: flex; gap: 15px; }
+    .btn { padding: 12px 25px; border: none; border-radius: 4px; cursor: pointer; text-decoration: none; display: inline-block; }
+    .btn-primary { background: #007bff; color: white; }
+    .btn-primary:hover { background: #0056b3; }
+    .btn-whatsapp { background: #25D366; color: white; font-size: 16px; }
+    .btn-whatsapp:hover { background: #20b558; }
+    .cart-form { margin-top: 30px; padding-top: 20px; border-top: 2px solid #eee; }
+    .cart-form h3 { margin-bottom: 20px; }
+    .form-group { margin-bottom: 15px; }
+    .form-group label { display: block; margin-bottom: 5px; font-weight: bold; }
+    .form-group input { width: 100%; padding: 10px; box-sizing: border-box; border: 1px solid #ddd; border-radius: 4px; }
+    .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #28a745; color: white; padding: 12px 25px; border-radius: 4px; box-shadow: 0 2px 10px rgba(0,0,0,0.2); z-index: 2000; opacity: 0; transition: opacity 0.3s; }
+    .toast.show { opacity: 1; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Krishna Enterprises</h1>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/admin">Admin</a>
+    </nav>
+  </header>
+  
+  <div class="container">
+    <div class="cart-container">
+      <h2>Shopping Cart</h2>
+      <div id="cartItems">
+        <div class="cart-empty">Loading...</div>
+      </div>
+      <div id="cartSection" style="display:none;">
+        <div class="cart-actions">
+          <a href="/" class="btn btn-primary" target="_blank">Continue Shopping</a>
+          <button class="btn btn-whatsapp" onclick="sendToWhatsApp()">Send Order to WhatsApp</button>
+        </div>
+        <div class="cart-form">
+          <h3>Customer Details</h3>
+          <div class="form-group">
+            <label>Your Name *</label>
+            <input type="text" id="customerName" placeholder="Enter your name" required>
+          </div>
+          <div class="form-group">
+            <label>Mobile Number *</label>
+            <input type="tel" id="customerMobile" placeholder="Enter mobile number" required>
+          </div>
+          <div class="form-group">
+            <label>Shop Name</label>
+            <input type="text" id="customerShop" placeholder="Enter shop name">
+          </div>
+          <div class="form-group">
+            <label>Address</label>
+            <input type="text" id="customerAddress" placeholder="Enter address">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast">Updated</div>
+
+  <script>
+    let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+    let whatsappNumber = '';
+
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      toast.textContent = message;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 2000);
+    }
+
+    function updateCart() {
+      localStorage.setItem('cart', JSON.stringify(cart));
+      renderCart();
+    }
+
+    async function loadSettings() {
+      try {
+        const res = await fetch('/api/settings');
+        const data = await res.json();
+        whatsappNumber = data.whatsapp_number || '';
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    function renderCart() {
+      const cartItems = document.getElementById('cartItems');
+      const cartSection = document.getElementById('cartSection');
+      
+      if (!cart.length) {
+        cartItems.innerHTML = '<div class="cart-empty">Your cart is empty</div>';
+        cartSection.style.display = 'none';
+        return;
+      }
+      
+      cartItems.innerHTML = cart.map(p => {
+        const images = typeof p.images === 'string' ? JSON.parse(p.images) : p.images;
+        const imgSrc = images.length ? images[0] : '';
+        return `
+          <div class="cart-item">
+            <img src="${imgSrc}" alt="${p.name}">
+            <div class="cart-item-info">
+              <h3>${p.name}</h3>
+              <div class="sku">SKU: ${p.sku}</div>
+            </div>
+            <div class="cart-item-qty">
+              <button onclick="changeQty(${p.id}, -1)">-</button>
+              <span>${p.quantity}</span>
+              <button onclick="changeQty(${p.id}, 1)">+</button>
+            </div>
+            <button class="cart-item-remove" onclick="removeFromCart(${p.id})">Remove</button>
+          </div>
+        `;
+      }).join('');
+      
+      cartSection.style.display = 'block';
+    }
+
+    function changeQty(id, delta) {
+      const item = cart.find(p => p.id === id);
+      if (item) {
+        item.quantity += delta;
+        if (item.quantity < 1) item.quantity = 1;
+        updateCart();
+        showToast('Cart updated');
+      }
+    }
+
+    function removeFromCart(id) {
+      cart = cart.filter(p => p.id !== id);
+      updateCart();
+      showToast('Item removed');
+    }
+
+    function sendToWhatsApp() {
+      const name = document.getElementById('customerName').value.trim();
+      const mobile = document.getElementById('customerMobile').value.trim();
+      const shop = document.getElementById('customerShop').value.trim();
+      const address = document.getElementById('customerAddress').value.trim();
+      
+      if (!name || !mobile) {
+        showToast('Please enter name and mobile number');
+        return;
+      }
+      
+      if (!whatsappNumber) {
+        showToast('WhatsApp not configured. Contact admin.');
+        return;
+      }
+      
+      if (!cart.length) {
+        showToast('Cart is empty');
+        return;
+      }
+      
+      let message = `*New Order from Krishna Enterprises*\n\n`;
+      message += `*Customer Details:*\n`;
+      message += `Name: ${name}\n`;
+      message += `Mobile: ${mobile}\n`;
+      if (shop) message += `Shop Name: ${shop}\n`;
+      if (address) message += `Address: ${address}\n\n`;
+      message += `*Order Details:*\n`;
+      
+      cart.forEach((p, i) => {
+        message += `${i+1}. ${p.name} (SKU: ${p.sku}) - Qty: ${p.quantity}\n`;
+      });
+      
+      message += `\nPlease share the total price and delivery details.`;
+      
+      window.open(`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`, '_blank');
+    }
+
+    loadSettings().then(renderCart);
+  </script>
+</body>
+</html>
