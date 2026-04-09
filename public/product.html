@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product Details</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: Arial, sans-serif; background: #f5f5f5; }
+    header { background: #333; color: white; padding: 20px; text-align: center; }
+    header h1 { margin-bottom: 10px; }
+    header nav a { color: white; text-decoration: none; margin: 0 15px; }
+    header nav a:hover { text-decoration: underline; }
+    .container { max-width: 800px; margin: 0 auto; padding: 20px; }
+    .product-detail { background: white; border-radius: 8px; padding: 30px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+    .product-detail .main-image { width: 100%; max-height: 400px; object-fit: cover; border-radius: 8px; margin-bottom: 20px; }
+    .product-detail h2 { margin-bottom: 15px; color: #333; }
+    .product-detail .sku { font-size: 14px; color: #666; margin-bottom: 15px; }
+    .product-detail .description { color: #555; line-height: 1.6; margin-bottom: 20px; }
+    .product-detail .all-images { display: flex; gap: 10px; flex-wrap: wrap; }
+    .product-detail .all-images img { width: 80px; height: 80px; object-fit: cover; border-radius: 4px; cursor: pointer; border: 2px solid transparent; }
+    .product-detail .all-images img:hover { border-color: #007bff; }
+    .loading { text-align: center; padding: 50px; color: #666; }
+    .error { text-align: center; padding: 50px; color: #dc3545; }
+    .back-link { display: inline-block; margin-bottom: 20px; color: #007bff; text-decoration: none; }
+    .back-link:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Product Details</h1>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/admin">Admin</a>
+    </nav>
+  </header>
+  
+  <div class="container">
+    <a href="/" class="back-link">&larr; Back to Products</a>
+    <div class="product-detail" id="productDetail">
+      <div class="loading">Loading product...</div>
+    </div>
+  </div>
+
+  <script>
+    function getSlugFromUrl() {
+      const path = window.location.pathname;
+      const parts = path.split('/');
+      return parts[parts.length - 1] || parts[parts.length - 2];
+    }
+
+    async function loadProduct() {
+      const slug = getSlugFromUrl();
+      if (!slug) {
+        document.getElementById('productDetail').innerHTML = '<div class="error">Product not found</div>';
+        return;
+      }
+
+      try {
+        const res = await fetch('/api/product/' + slug);
+        if (!res.ok) {
+          document.getElementById('productDetail').innerHTML = '<div class="error">Product not found</div>';
+          return;
+        }
+        const product = await res.json();
+        const images = typeof product.images === 'string' ? JSON.parse(product.images) : product.images;
+        
+        if (!images.length) {
+          document.getElementById('productDetail').innerHTML = '<div class="error">No images available</div>';
+          return;
+        }
+
+        let mainImage = images[0];
+        let allImagesHtml = images.map((img, i) => 
+          `<img src="${img}" onclick="document.getElementById('mainImage').src='${img}'" alt="Product image ${i+1}">`
+        ).join('');
+
+        document.getElementById('productDetail').innerHTML = `
+          <img id="mainImage" class="main-image" src="${mainImage}" alt="${product.name}">
+          <h2>${product.name}</h2>
+          <div class="sku"><strong>SKU:</strong> ${product.sku}</div>
+          <p class="description">${product.description || 'No description available'}</p>
+          ${images.length > 1 ? `<div class="all-images">${allImagesHtml}</div>` : ''}
+        `;
+      } catch (err) {
+        document.getElementById('productDetail').innerHTML = '<div class="error">Error loading product</div>';
+      }
+    }
+
+    loadProduct();
+  </script>
+</body>
+</html>
