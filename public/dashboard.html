@@ -3,42 +3,348 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Dashboard</title>
+  <title>Admin Dashboard - Krishna Enterprises</title>
+
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
   <style>
-    body { font-family: Arial, sans-serif; padding: 20px; background: #f0f0f0; margin: 0; }
-    .dashboard { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-    h1 { color: #333; }
-    .nav { margin-bottom: 20px; }
-    .btn { padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; text-decoration: none; display: inline-block; margin-right: 10px; }
-    .btn-primary { background: #007bff; color: white; }
-    .btn-danger { background: #dc3545; color: white; }
-    .btn-secondary { background: #6c757d; color: white; }
+    :root {
+      --ke-green:         #1A3C2E;
+      --ke-green-mid:     #2D5C45;
+      --ke-green-light:   #E8F5EE;
+      --ke-green-dark:    #0D2218;
+      --ke-gold:          #B8860B;
+      --ke-gold-light:    #FDF6E3;
+      --ke-gold-muted:    #D4A843;
+      --ke-surface:       #FAFAF8;
+      --ke-border:        #E8E6E0;
+      --ke-text:          #1C1C1A;
+      --ke-text-muted:    #7A7870;
+      --ke-whatsapp:      #1DA851;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--ke-surface);
+      color: var(--ke-text);
+      font-size: 15px;
+    }
+
+    h1, h2, .font-brand { font-family: 'Playfair Display', serif; }
+
+    .btn-primary { background-color: var(--ke-green); border-color: var(--ke-green); }
+    .btn-primary:hover { background-color: var(--ke-green-mid); border-color: var(--ke-green-mid); }
+
+    /* Mobile Header */
+    .mobile-header {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: var(--ke-green-dark);
+      padding: 12px 15px;
+      z-index: 1001;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    }
+    .mobile-header a {
+      color: #fff;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .mobile-header span {
+      font-family: 'Playfair Display', serif;
+      font-weight: 600;
+      font-size: 16px;
+    }
+
+    /* Mobile Bottom Navigation */
+    .mobile-bottom-nav {
+      display: none;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: var(--ke-green-dark);
+      border-top: 1px solid rgba(255,255,255,0.1);
+      padding: 16px 0;
+      z-index: 1000;
+      box-shadow: 0 -2px 10px rgba(0,0,0,0.2);
+    }
+    .mobile-bottom-nav a {
+      flex: 1;
+      text-align: center;
+      color: rgba(255,255,255,0.6);
+      text-decoration: none;
+      font-size: 11px;
+      padding: 4px 0;
+      transition: color 0.2s;
+    }
+    .mobile-bottom-nav a.active,
+    .mobile-bottom-nav a:hover {
+      color: var(--ke-gold-muted);
+    }
+    .mobile-bottom-nav a i {
+      display: block;
+      margin: 0 auto 2px;
+    }
+
+    @media (max-width: 768px) {
+      .mobile-header { display: block; }
+      .mobile-bottom-nav { display: flex; }
+      #sidebar { display: none !important; }
+      body { padding-top: 55px; padding-bottom: 70px; }
+    }
+
+    #sidebar {
+      width: 240px;
+      background: var(--ke-green-dark);
+      flex-shrink: 0;
+      transition: all 0.3s;
+    }
+
+    #sidebar .brand {
+      font-family: 'Playfair Display', serif;
+      font-weight: 600;
+      color: #fff;
+      font-size: 18px;
+      padding: 20px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    #sidebar .nav-link {
+      color: rgba(255,255,255,0.7);
+      padding: 12px 20px;
+      font-size: 14px;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: all 0.2s;
+    }
+
+    #sidebar .nav-link:hover, #sidebar .nav-link.active {
+      color: #fff;
+      background: rgba(255,255,255,0.1);
+      border-left: 3px solid var(--ke-gold-muted);
+    }
+
+    #sidebar .logout-btn {
+      margin: 20px;
+    }
+
+    .main-content {
+      background: var(--ke-surface);
+      flex-grow: 1;
+    }
+
+    .top-bar {
+      background: #fff;
+      border-bottom: 1px solid var(--ke-border);
+      padding: 16px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .stat-card {
+      border-top: 3px solid var(--ke-green);
+    }
   </style>
 </head>
 <body>
-  <div class="dashboard">
-    <div class="nav">
-      <a href="/admin/products-page" class="btn btn-primary">Products</a>
-      <a href="/admin/settings-page" class="btn btn-secondary">Settings</a>
-      <button class="btn btn-danger" onclick="logout()">Logout</button>
+  <div class="d-flex min-vh-100">
+    <!-- Sidebar -->
+    <div id="sidebar">
+      <div class="brand d-flex align-items-center gap-2">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <path d="M12 2C6.5 2 3 7 3 12c0 3.5 2 6.5 5 8l1-3c-1.5-1-2.5-2.8-2.5-5
+                   0-3.5 2.5-7 5.5-7s5.5 3.5 5.5 7c0 2.2-1 4-2.5 5l1 3c3-1.5 5-4.5
+                   5-8 0-5-3.5-10-9.5-10z"
+                fill="#A7F3D0"/>
+        </svg>
+        Krishna Enterprises
+      </div>
+      <nav class="nav flex-column mt-3">
+        <a href="/admin/dashboard" class="nav-link active">
+          <i data-lucide="layout-dashboard" style="width:18px;height:18px;"></i>
+          Dashboard
+        </a>
+        <a href="/admin/products" class="nav-link">
+          <i data-lucide="package" style="width:18px;height:18px;"></i>
+          Products
+        </a>
+        <a href="/admin/settings" class="nav-link">
+          <i data-lucide="settings" style="width:18px;height:18px;"></i>
+          Settings
+        </a>
+      </nav>
+      <button class="btn btn-outline-light btn-sm logout-btn w-80" onclick="logout()">
+        <i data-lucide="log-out" style="width:16px;height:16px;"></i>
+        Logout
+      </button>
     </div>
-    <h1 id="message">Loading...</h1>
+
+    <!-- Main Content -->
+    <div class="main-content">
+      <div class="top-bar">
+        <h5 class="mb-0 fw-semibold">Dashboard</h5>
+        <span style="font-size:13px;color:var(--ke-text-muted);">Admin Panel</span>
+      </div>
+
+      <div class="p-4">
+        <h4 class="mb-4 fw-semibold">Welcome to Admin Panel</h4>
+        
+        <div class="row g-3 mb-4">
+          <div class="col-6 col-lg-3">
+            <div class="card stat-card p-3">
+              <div class="d-flex align-items-center gap-3">
+                <div class="d-flex align-items-center justify-content-center" style="width:48px;height:48px;background:var(--ke-green-light);border-radius:12px;">
+                  <i data-lucide="package" style="width:24px;height:24px;color:var(--ke-green);"></i>
+                </div>
+                <div>
+                  <div class="fw-bold" style="font-size:24px;" id="productCount">...</div>
+                  <div class="text-muted" style="font-size:13px;">Total Products</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-6 col-lg-3">
+            <div class="card stat-card p-3">
+              <div class="d-flex align-items-center gap-3">
+                <div class="d-flex align-items-center justify-content-center" style="width:48px;height:48px;background:var(--ke-gold-light);border-radius:12px;">
+                  <i data-lucide="check-circle" style="width:24px;height:24px;color:var(--ke-gold);"></i>
+                </div>
+                <div>
+                  <div class="fw-bold" style="font-size:24px;" id="activeProducts">...</div>
+                  <div class="text-muted" style="font-size:13px;">Active Products</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-12 col-lg-3">
+            <div class="card stat-card p-3">
+              <div class="d-flex align-items-center gap-3">
+                <div class="d-flex align-items-center justify-content-center" style="width:48px;height:48px;background:rgba(29,168,81,0.1);border-radius:12px;">
+                  <i data-lucide="message-circle" style="width:24px;height:24px;color:var(--ke-whatsapp);"></i>
+                </div>
+                <div>
+                  <div class="fw-bold" style="font-size:18px;">WhatsApp</div>
+                  <div class="text-muted" style="font-size:13px;">Ordering Enabled</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
+
   <script>
     const token = localStorage.getItem('adminToken');
     if (!token) { window.location.href = '/admin'; }
 
-    fetch('/admin/dashboard', {
-      headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' }
-    })
-    .then(res => { if (!res.ok) throw new Error('Unauthorized'); return res.json(); })
-    .then(data => { document.getElementById('message').textContent = data.message; })
-    .catch(() => { localStorage.removeItem('adminToken'); window.location.href = '/admin'; });
+    async function apiCall(url, method = 'GET', body = null) {
+      const headers = { 'Authorization': `Bearer ${token}` };
+      let options = { method, headers };
+      if (body) {
+        headers['Content-Type'] = 'application/json';
+        options.body = JSON.stringify(body);
+      }
+      const res = await fetch(url, options);
+      const text = await res.text();
+      try {
+        return JSON.parse(text);
+      } catch (e) {
+        throw new Error(text || 'Invalid response');
+      }
+    }
+
+    async function loadDashboard() {
+      try {
+        const products = await apiCall('/api/admin/products');
+        const total = products.length;
+        const active = products.filter(p => p.is_active).length;
+        document.getElementById('productCount').textContent = total;
+        document.getElementById('activeProducts').textContent = active;
+        lucide.createIcons();
+      } catch (err) {
+        document.getElementById('productCount').textContent = '-';
+        document.getElementById('activeProducts').textContent = '-';
+        lucide.createIcons();
+      }
+    }
 
     function logout() {
       localStorage.removeItem('adminToken');
       window.location.href = '/admin';
     }
+
+    const sidebar = document.getElementById('sidebar');
+    const toggle = document.getElementById('sidebarToggle');
+    if (toggle) toggle.addEventListener('click', () => {
+      sidebar.style.width = sidebar.style.width === '0px' ? '240px' : '0px';
+      sidebar.style.overflow = sidebar.style.width === '0px' ? 'hidden' : '';
+    });
+
+    loadDashboard();
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>lucide.createIcons();</script>
+
+  <!-- Mobile Header -->
+  <div class="mobile-header">
+    <a href="/">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+        <path d="M12 2C6.5 2 3 7 3 12c0 3.5 2 6.5 5 8l1-3c-1.5-1-2.5-2.8-2.5-5
+                 0-3.5 2.5-7 5.5-7s5.5 3.5 5.5 7c0 2.2-1 4-2.5 5l1 3c3-1.5 5-4.5
+                 5-8 0-5-3.5-10-9.5-10z"
+              fill="#A7F3D0"/>
+      </svg>
+      <span>Krishna Enterprises</span>
+    </a>
+  </div>
+
+  <!-- Mobile Bottom Navigation -->
+  <nav class="mobile-bottom-nav">
+    <a href="/admin/dashboard" class="nav-dashboard">
+      <i data-lucide="layout-dashboard" style="width:20px;height:20px;"></i>
+      <span>Dashboard</span>
+    </a>
+    <a href="/admin/products" class="nav-products">
+      <i data-lucide="package" style="width:20px;height:20px;"></i>
+      <span>Products</span>
+    </a>
+    <a href="/admin/settings" class="nav-settings">
+      <i data-lucide="settings" style="width:20px;height:20px;"></i>
+      <span>Settings</span>
+    </a>
+    <a href="#" onclick="logout()" class="nav-logout">
+      <i data-lucide="log-out" style="width:20px;height:20px;"></i>
+      <span>Logout</span>
+    </a>
+  </nav>
+
+  <script>
+    document.querySelectorAll('.mobile-bottom-nav a').forEach(link => {
+      const href = link.getAttribute('href');
+      if (href && (href === window.location.pathname || window.location.pathname.startsWith(href + '/'))) {
+        link.classList.add('active');
+      }
+    });
+    lucide.createIcons();
   </script>
 </body>
 </html>

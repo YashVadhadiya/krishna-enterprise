@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cart - Krishna Enterprises</title>
+  <title>About Us - Krishna Enterprises</title>
+  <meta name="description" content="Learn about Krishna Enterprises - a leading stationery wholesaler in Gujarat with over 20 years of experience.">
 
   <!-- Bootstrap 5 CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -62,6 +63,15 @@
 
     .card { border: 1px solid var(--ke-border); border-radius: 12px; transition: all 0.25s ease; }
     .card:hover { box-shadow: 0 8px 24px rgba(26,60,46,0.10); transform: translateY(-2px); border-color: #C4DDD2; }
+
+    .section-eyebrow {
+      font-size: 12px; font-weight: 500; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--ke-gold); font-family: 'Inter', sans-serif;
+    }
+    .section-divider {
+      width: 40px; height: 2px; background: var(--ke-gold-muted);
+      border-radius: 2px; margin: 10px auto 16px;
+    }
 
     .ke-navbar { background-color: var(--ke-green-dark) !important; }
     .ke-navbar .navbar-brand { font-family: 'Playfair Display', serif; font-weight: 600; color: #fff !important; }
@@ -209,67 +219,136 @@
   <!-- Compact Hero -->
   <section class="ke-hero-compact text-white">
     <div class="container py-4">
-      <h1 class="font-brand text-white">Shopping Cart</h1>
-      <p style="color:#A7F3D0;">Review your items and place your order</p>
+      <h1 class="font-brand text-white">Two Decades of Stationery Excellence</h1>
+      <p style="color:#A7F3D0;">Our story, our values, and the people behind the brand.</p>
     </div>
   </section>
 
-  <!-- Cart Section -->
-  <div class="container py-5">
-    <div class="card p-4" id="cartSection" style="display:none;">
-      <h2 class="font-brand mb-4">Your Cart Items</h2>
-      <div id="cartItems">
-        <div class="text-center py-4">
-          <i data-lucide="loader-2" class="animate-spin" style="width:32px;height:32px;color:var(--ke-green);"></i>
-          <p class="mt-2 text-muted">Loading cart...</p>
+  <!-- Our Story Section -->
+  <section class="py-5 bg-white">
+    <div class="container py-4">
+      <div class="row g-4 align-items-center">
+        <div class="col-12 col-lg-6">
+          <p class="section-eyebrow">Our Story</p>
+          <h2 class="font-brand mb-4" style="font-size:clamp(22px,3vw,32px);">Built on Trust, Grown by Service</h2>
+          <p class="text-muted mb-3" style="font-size:15px;line-height:1.8;">Founded in 2005 by the Krishna family in Rajkot, Gujarat, Krishna Enterprises began as a small stationery shop with a vision to serve local retailers with quality products at fair prices.</p>
+          <p class="text-muted mb-3" style="font-size:15px;line-height:1.8;">Over the years, we have grown into one of the most trusted stationery wholesalers in Saurashtra, supplying over 500 retailers, schools, offices, and businesses with a catalog of more than 1,000 products.</p>
+          <p class="text-muted mb-0" style="font-size:15px;line-height:1.8;">Our commitment is simple — quality products, honest pricing, and service that puts our customers first. Every order, big or small, gets the same care and attention.</p>
         </div>
-      </div>
-      
-      <div id="cartForm" class="mt-4 pt-4" style="border-top:2px solid var(--ke-border);">
-        <h3 class="font-brand mb-3">Customer Details</h3>
-        <div class="row g-3">
-          <div class="col-12 col-md-6">
-            <label class="form-label">Your Name *</label>
-            <input type="text" id="customerName" class="form-control" placeholder="Enter your name" required>
+        <div class="col-12 col-lg-6">
+          <div class="card bg-primary text-white p-4 p-md-5" style="border-radius:16px;">
+            <div class="row g-3">
+              <div class="col-6 text-center">
+                <div class="fw-bold" style="font-size:32px;">500+</div>
+                <div style="font-size:13px;opacity:0.8;">Retailers Served</div>
+              </div>
+              <div class="col-6 text-center">
+                <div class="fw-bold" style="font-size:32px;">1000+</div>
+                <div style="font-size:13px;opacity:0.8;">Products in Catalog</div>
+              </div>
+              <div class="col-6 text-center">
+                <div class="fw-bold" style="font-size:32px;">20+</div>
+                <div style="font-size:13px;opacity:0.8;">Years of Experience</div>
+              </div>
+              <div class="col-6 text-center">
+                <div class="fw-bold" style="font-size:32px;">15+</div>
+                <div style="font-size:13px;opacity:0.8;">Districts We Deliver To</div>
+              </div>
+            </div>
           </div>
-          <div class="col-12 col-md-6">
-            <label class="form-label">Mobile Number *</label>
-            <input type="tel" id="customerMobile" class="form-control" placeholder="Enter mobile number" required>
-          </div>
-          <div class="col-12 col-md-6">
-            <label class="form-label">Shop Name</label>
-            <input type="text" id="customerShop" class="form-control" placeholder="Enter shop name">
-          </div>
-          <div class="col-12 col-md-6">
-            <label class="form-label">Address</label>
-            <input type="text" id="customerAddress" class="form-control" placeholder="Enter address">
-          </div>
-        </div>
-        <div class="d-flex flex-wrap gap-3 mt-4">
-          <a href="/products" class="btn btn-outline-primary">
-            <i data-lucide="arrow-left" style="width:16px;height:16px;"></i>
-            Continue Shopping
-          </a>
-          <button class="btn btn-whatsapp" onclick="sendToWhatsApp()">
-            <i data-lucide="message-circle" style="width:16px;height:16px;"></i>
-            Send Order to WhatsApp
-          </button>
         </div>
       </div>
     </div>
+  </section>
 
-    <div id="emptyCart" class="text-center py-5">
-      <i data-lucide="shopping-cart" style="width:64px;height:64px;color:#C4DDD2;"></i>
-      <h4 class="mt-3 text-muted">Your cart is empty</h4>
-      <p class="text-muted" style="font-size:14px;">Add some products to get started!</p>
-      <a href="/products" class="btn btn-primary mt-2">Browse Products</a>
+  <!-- Our Values Section -->
+  <section class="py-5" style="background:var(--ke-surface);">
+    <div class="container py-4">
+      <div class="text-center mb-5">
+        <p class="section-eyebrow">What We Stand For</p>
+        <h2 class="font-brand mb-0" style="font-size:clamp(22px,3vw,32px);">Our Core Values</h2>
+        <div class="section-divider"></div>
+      </div>
+      <div class="row g-4">
+        <div class="col-12 col-md-4">
+          <div class="card h-100 p-4 text-center">
+            <div class="d-flex align-items-center justify-content-center mx-auto mb-3" style="width:56px;height:56px;background:var(--ke-green-light);border-radius:50%;">
+              <i data-lucide="heart" style="width:24px;height:24px;color:var(--ke-green);"></i>
+            </div>
+            <h5 class="fw-semibold mb-2">Customer First</h5>
+            <p class="text-muted mb-0" style="font-size:14px;line-height:1.6;">Every decision we make puts our retailers and customers at the center.</p>
+          </div>
+        </div>
+        <div class="col-12 col-md-4">
+          <div class="card h-100 p-4 text-center">
+            <div class="d-flex align-items-center justify-content-center mx-auto mb-3" style="width:56px;height:56px;background:var(--ke-gold-light);border-radius:50%;">
+              <i data-lucide="shield-check" style="width:24px;height:24px;color:var(--ke-gold);"></i>
+            </div>
+            <h5 class="fw-semibold mb-2">Uncompromising Quality</h5>
+            <p class="text-muted mb-0" style="font-size:14px;line-height:1.6;">We source only from trusted manufacturers and verify every product.</p>
+          </div>
+        </div>
+        <div class="col-12 col-md-4">
+          <div class="card h-100 p-4 text-center">
+            <div class="d-flex align-items-center justify-content-center mx-auto mb-3" style="width:56px;height:56px;background:rgba(29,168,81,0.1);border-radius:50%;">
+              <i data-lucide="handshake" style="width:24px;height:24px;color:var(--ke-whatsapp);"></i>
+            </div>
+            <h5 class="fw-semibold mb-2">Honest Business</h5>
+            <p class="text-muted mb-0" style="font-size:14px;line-height:1.6;">Transparent pricing, no hidden costs, and relationships built on trust.</p>
+          </div>
+        </div>
+      </div>
     </div>
-  </div>
+  </section>
 
-  <!-- Toast -->
-  <div id="toast" class="position-fixed bottom-0 start-50 translate-middle-x bg-success text-white px-4 py-2 rounded shadow-lg" style="display:none;z-index:2000;">
-    Cart updated
-  </div>
+  <!-- Meet the Team Section -->
+  <section class="py-5 bg-white">
+    <div class="container py-4">
+      <div class="text-center mb-5">
+        <p class="section-eyebrow">Our People</p>
+        <h2 class="font-brand mb-0" style="font-size:clamp(22px,3vw,32px);">The People Behind Krishna Enterprises</h2>
+        <div class="section-divider"></div>
+      </div>
+      <div class="row g-4 justify-content-center">
+        <div class="col-12 col-md-4">
+          <div class="card h-100 p-4 text-center">
+            <div class="d-flex align-items-center justify-content-center mx-auto mb-3" style="width:72px;height:72px;border-radius:50%;background:var(--ke-green);color:#A7F3D0;font-weight:700;font-size:24px;">KP</div>
+            <h5 class="fw-semibold mb-1">Krishnakant Patel</h5>
+            <p class="text-warning mb-2" style="font-size:13px;">Founder & Owner</p>
+            <p class="text-muted mb-0" style="font-size:14px;line-height:1.6;">25+ years of experience in the stationery trade across Gujarat.</p>
+          </div>
+        </div>
+        <div class="col-12 col-md-4">
+          <div class="card h-100 p-4 text-center">
+            <div class="d-flex align-items-center justify-content-center mx-auto mb-3" style="width:72px;height:72px;border-radius:50%;background:var(--ke-gold);color:#FFF8E8;font-weight:700;font-size:24px;">RP</div>
+            <h5 class="fw-semibold mb-1">Rahul Patel</h5>
+            <p class="text-warning mb-2" style="font-size:13px;">Operations Manager</p>
+            <p class="text-muted mb-0" style="font-size:14px;line-height:1.6;">Manages day-to-day operations, inventory, and customer relationships.</p>
+          </div>
+        </div>
+        <div class="col-12 col-md-4">
+          <div class="card h-100 p-4 text-center">
+            <div class="d-flex align-items-center justify-content-center mx-auto mb-3" style="width:72px;height:72px;border-radius:50%;background:#0D9488;color:#F0FDFA;font-weight:700;font-size:24px;">NP</div>
+            <h5 class="fw-semibold mb-1">Nisha Patel</h5>
+            <p class="text-warning mb-2" style="font-size:13px;">Customer Relations</p>
+            <p class="text-muted mb-0" style="font-size:14px;line-height:1.6;">Your first point of contact for orders, queries, and support.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Banner -->
+  <section style="background:linear-gradient(135deg,#B8860B,#9A7009);padding:80px 0;">
+    <div class="container text-center text-white">
+      <h2 class="font-brand mb-3" style="font-size:clamp(22px,3vw,36px);">Ready to Place an Order?</h2>
+      <p style="font-size:16px;opacity:0.88;max-width:480px;margin:0 auto 32px;line-height:1.7;">Browse our products or contact us to get started</p>
+      <div class="d-flex flex-wrap gap-3 justify-content-center">
+        <a href="/products" class="btn btn-lg px-4" style="background:#fff;color:var(--ke-gold);font-weight:600;border-radius:8px;">Browse Products</a>
+        <a href="/contact" class="btn btn-outline-light btn-lg px-4">Contact Us</a>
+      </div>
+    </div>
+  </section>
 
   <!-- Footer -->
   <footer class="ke-footer text-white pt-5 pb-3 mt-5">
@@ -324,144 +403,16 @@
   </footer>
 
   <script>
-    const CART_KEY = 'ke_cart';
-    let cart = JSON.parse(localStorage.getItem(CART_KEY) || '[]');
-    let whatsappNumber = '';
-
-    function showToast(message) {
-      const toast = document.getElementById('toast');
-      toast.textContent = message;
-      toast.style.display = 'block';
-      setTimeout(() => toast.style.display = 'none', 2000);
-    }
-
-    function updateCart() {
-      localStorage.setItem(CART_KEY, JSON.stringify(cart));
-      renderCart();
-    }
-
-    async function loadSettings() {
-      try {
-        const res = await fetch('/api/settings');
-        const data = await res.json();
-        whatsappNumber = data.whatsapp_number || '';
-      } catch (err) {
-        console.error(err);
-      }
-    }
-
-    function renderCart() {
-      const cartItems = document.getElementById('cartItems');
-      const cartSection = document.getElementById('cartSection');
-      const emptyCart = document.getElementById('emptyCart');
-      const cartForm = document.getElementById('cartForm');
-      
-      if (!cart.length) {
-        cartItems.innerHTML = '';
-        cartSection.style.display = 'none';
-        emptyCart.style.display = 'block';
-        updateCartCount();
-        lucide.createIcons();
-        return;
-      }
-      
-      emptyCart.style.display = 'none';
-      cartSection.style.display = 'block';
-      cartForm.style.display = 'block';
-      
-      cartItems.innerHTML = cart.map(p => {
-        const images = typeof p.images === 'string' ? JSON.parse(p.images) : p.images;
-        const imgSrc = images.length ? images[0] : '';
-        return `
-          <div class="d-flex align-items-center gap-3 py-3 border-bottom" style="border-color:var(--ke-border) !important;">
-            ${imgSrc ? `<img src="${imgSrc}" alt="${p.name}" class="rounded" style="width:80px;height:80px;object-fit:cover;">` : `<div class="rounded bg-light d-flex align-items-center justify-content-center" style="width:80px;height:80px;"><i data-lucide="image" style="width:24px;height:24px;color:#C4DDD2;"></i></div>`}
-            <div class="flex-grow-1">
-              <h6 class="mb-1 fw-semibold">${p.name}</h6>
-              <p class="mb-0 text-muted" style="font-size:12px;"><i data-lucide="box" style="width:12px;height:12px;"></i> SKU: ${p.sku || 'N/A'}</p>
-            </div>
-            <div class="d-flex align-items-center gap-2">
-              <button class="btn btn-outline-secondary btn-sm" style="width:32px;height:32px;padding:0;" onclick="changeQty(${p.id}, -1)">−</button>
-              <span class="fw-semibold" style="min-width:30px;text-align:center;">${p.quantity}</span>
-              <button class="btn btn-outline-secondary btn-sm" style="width:32px;height:32px;padding:0;" onclick="changeQty(${p.id}, 1)">+</button>
-            </div>
-            <button class="btn btn-outline-danger btn-sm" onclick="removeFromCart(${p.id})">
-              <i data-lucide="trash-2" style="width:14px;height:14px;"></i>
-            </button>
-          </div>
-        `;
-      }).join('');
-      
-      updateCartCount();
-      lucide.createIcons();
-    }
-
-    function changeQty(id, delta) {
-      const item = cart.find(p => p.id === id);
-      if (item) {
-        item.quantity += delta;
-        if (item.quantity < 1) item.quantity = 1;
-        updateCart();
-        showToast('Cart updated');
-      }
-    }
-
-    function removeFromCart(id) {
-      cart = cart.filter(p => p.id !== id);
-      updateCart();
-      showToast('Item removed');
-    }
-
-    function sendToWhatsApp() {
-      const name = document.getElementById('customerName').value.trim();
-      const mobile = document.getElementById('customerMobile').value.trim();
-      const shop = document.getElementById('customerShop').value.trim();
-      const address = document.getElementById('customerAddress').value.trim();
-      
-      if (!name || !mobile) {
-        showToast('Please enter name and mobile number');
-        return;
-      }
-      
-      if (!whatsappNumber) {
-        showToast('WhatsApp not configured. Contact admin.');
-        return;
-      }
-      
-      if (!cart.length) {
-        showToast('Cart is empty');
-        return;
-      }
-      
-      let message = `*New Order from Krishna Enterprises*\n\n`;
-      message += `*Customer Details:*\n`;
-      message += `Name: ${name}\n`;
-      message += `Mobile: ${mobile}\n`;
-      if (shop) message += `Shop Name: ${shop}\n`;
-      if (address) message += `Address: ${address}\n\n`;
-      message += `*Order Details:*\n`;
-      
-      cart.forEach((p, i) => {
-        message += `${i+1}. ${p.name} (SKU: ${p.sku}) - Qty: ${p.quantity}\n`;
-      });
-      
-      message += `\nPlease share the total price and delivery details.`;
-      
-      window.open(`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`, '_blank');
-    }
-
-    function updateCartCount() {
-      const total = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
-      const badge = document.getElementById('cartBadge');
-      if (badge) badge.textContent = total;
-      const mobileBadge = document.getElementById('mobileCartBadge');
-      if (mobileBadge) mobileBadge.textContent = total;
-    }
-
     document.querySelectorAll('.ke-navbar .nav-link').forEach(link => {
       if (link.href === window.location.href) link.classList.add('active');
     });
-
-    loadSettings().then(renderCart);
+    const cart = JSON.parse(localStorage.getItem('ke_cart') || '[]');
+    const count = cart.reduce((s, i) => s + (i.quantity || 1), 0);
+    const badge = document.getElementById('cartBadge');
+    if (badge) badge.textContent = count;
+    const mobileBadge = document.getElementById('mobileCartBadge');
+    if (mobileBadge) mobileBadge.textContent = count;
+    lucide.createIcons();
   </script>
 
   <!-- Bootstrap 5 JS -->

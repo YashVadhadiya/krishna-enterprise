@@ -3,86 +3,295 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin - Products</title>
+  <title>Admin Products - Krishna Enterprises</title>
+
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
   <style>
-    body { font-family: Arial, sans-serif; padding: 20px; background: #f0f0f0; margin: 0; }
-    .header { display: flex; justify-content: space-between; align-items: center; background: white; padding: 15px 20px; border-radius: 8px; margin-bottom: 20px; }
-    h1 { margin: 0; }
-    .btn { padding: 8px 16px; border: none; border-radius: 4px; cursor: pointer; margin-left: 10px; }
-    .btn-primary { background: #007bff; color: white; }
-    .btn-danger { background: #dc3545; color: white; }
-    .btn-success { background: #28a745; color: white; }
-    .btn-logout { background: #6c757d; color: white; }
-    table { width: 100%; border-collapse: collapse; background: white; border-radius: 8px; overflow: hidden; }
-    th, td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
-    th { background: #f8f9fa; font-weight: bold; }
-    .product-img { width: 60px; height: 60px; object-fit: cover; border-radius: 4px; cursor: pointer; }
+    :root {
+      --ke-green:         #1A3C2E;
+      --ke-green-mid:     #2D5C45;
+      --ke-green-light:   #E8F5EE;
+      --ke-green-dark:    #0D2218;
+      --ke-gold:          #B8860B;
+      --ke-gold-light:    #FDF6E3;
+      --ke-gold-muted:    #D4A843;
+      --ke-surface:       #FAFAF8;
+      --ke-border:        #E8E6E0;
+      --ke-text:          #1C1C1A;
+      --ke-text-muted:    #7A7870;
+      --ke-whatsapp:      #1DA851;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--ke-surface);
+      color: var(--ke-text);
+      font-size: 15px;
+    }
+
+    h1, h2, .font-brand { font-family: 'Playfair Display', serif; }
+
+    .btn-primary { background-color: var(--ke-green); border-color: var(--ke-green); }
+    .btn-primary:hover { background-color: var(--ke-green-mid); border-color: var(--ke-green-mid); }
+
+    /* Mobile Header */
+    .mobile-header {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: var(--ke-green-dark);
+      padding: 12px 15px;
+      z-index: 1001;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    }
+    .mobile-header a {
+      color: #fff;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .mobile-header span {
+      font-family: 'Playfair Display', serif;
+      font-weight: 600;
+      font-size: 16px;
+    }
+
+    /* Mobile Bottom Navigation */
+    .mobile-bottom-nav {
+      display: none;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: var(--ke-green-dark);
+      border-top: 1px solid rgba(255,255,255,0.1);
+      padding: 16px 0;
+      z-index: 1000;
+      box-shadow: 0 -2px 10px rgba(0,0,0,0.2);
+    }
+    .mobile-bottom-nav a {
+      flex: 1;
+      text-align: center;
+      color: rgba(255,255,255,0.6);
+      text-decoration: none;
+      font-size: 11px;
+      padding: 4px 0;
+      transition: color 0.2s;
+    }
+    .mobile-bottom-nav a.active,
+    .mobile-bottom-nav a:hover {
+      color: var(--ke-gold-muted);
+    }
+    .mobile-bottom-nav a i {
+      display: block;
+      margin: 0 auto 2px;
+    }
+
+    @media (max-width: 768px) {
+      .mobile-header { display: block; }
+      .mobile-bottom-nav { display: flex; }
+      #sidebar { display: none !important; }
+      body { padding-top: 55px; padding-bottom: 70px; }
+    }
+
+    #sidebar {
+      width: 240px;
+      background: var(--ke-green-dark);
+      flex-shrink: 0;
+      transition: all 0.3s;
+    }
+
+    #sidebar .brand {
+      font-family: 'Playfair Display', serif;
+      font-weight: 600;
+      color: #fff;
+      font-size: 18px;
+      padding: 20px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    #sidebar .nav-link {
+      color: rgba(255,255,255,0.7);
+      padding: 12px 20px;
+      font-size: 14px;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: all 0.2s;
+    }
+
+    #sidebar .nav-link:hover, #sidebar .nav-link.active {
+      color: #fff;
+      background: rgba(255,255,255,0.1);
+      border-left: 3px solid var(--ke-gold-muted);
+    }
+
+    #sidebar .logout-btn {
+      margin: 20px;
+    }
+
+    .main-content {
+      background: var(--ke-surface);
+      flex-grow: 1;
+    }
+
+    .top-bar {
+      background: #fff;
+      border-bottom: 1px solid var(--ke-border);
+      padding: 16px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
     .toggle-switch { position: relative; width: 50px; height: 26px; }
     .toggle-switch input { opacity: 0; width: 0; height: 0; }
-    .toggle-slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: 0.4s; border-radius: 34px; }
-    .toggle-slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 4px; bottom: 4px; background-color: white; transition: 0.4s; border-radius: 50%; }
-    input:checked + .toggle-slider { background-color: #28a745; }
+    .toggle-slider {
+      position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
+      background-color: #ccc; transition: 0.4s; border-radius: 34px;
+    }
+    .toggle-slider:before {
+      position: absolute; content: ""; height: 18px; width: 18px;
+      left: 4px; bottom: 4px; background-color: white; transition: 0.4s; border-radius: 50%;
+    }
+    input:checked + .toggle-slider { background-color: var(--ke-green); }
     input:checked + .toggle-slider:before { transform: translateX(24px); }
-    .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); justify-content: center; align-items: center; }
+
+    .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); justify-content: center; align-items: center; z-index: 1050; }
     .modal.show { display: flex; }
-    .modal-content { background: white; padding: 30px; border-radius: 8px; width: 500px; max-width: 90%; max-height: 90vh; overflow-y: auto; }
-    .modal-content h2 { margin-top: 0; }
-    .form-group { margin-bottom: 15px; }
-    .form-group label { display: block; margin-bottom: 5px; font-weight: bold; }
-    .form-group input, .form-group textarea { width: 100%; padding: 10px; box-sizing: border-box; border: 1px solid #ddd; border-radius: 4px; }
-    .form-group textarea { height: 80px; resize: vertical; }
-    .form-group .info-text { font-size: 12px; color: #666; margin-top: 5px; }
+    .modal-content { background: white; padding: 24px; border-radius: 12px; width: 500px; max-width: 90%; max-height: 90vh; overflow-y: auto; }
+
     .image-previews { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px; }
-    .image-previews img { width: 80px; height: 80px; object-fit: cover; border-radius: 4px; position: relative; }
+    .image-previews img { width: 80px; height: 80px; object-fit: cover; border-radius: 8px; position: relative; }
     .image-previews .img-wrap { position: relative; }
-    .image-previews .remove-img { position: absolute; top: -5px; right: -5px; background: red; color: white; border: none; border-radius: 50%; width: 20px; height: 20px; cursor: pointer; font-size: 12px; }
-    .file-input { margin-top: 5px; }
+    .image-previews .remove-img {
+      position: absolute; top: -5px; right: -5px; background: #dc3545;
+      color: white; border: none; border-radius: 50%; width: 20px;
+      height: 20px; cursor: pointer; font-size: 12px; display: flex; align-items: center; justify-content: center;
+    }
+
+    .product-img { width: 50px; height: 50px; object-fit: cover; border-radius: 8px; cursor: pointer; }
   </style>
 </head>
 <body>
-  <div class="header">
-    <h1>Products</h1>
-    <div>
-      <button class="btn btn-primary" onclick="openModal()">Add Product</button>
-      <button class="btn btn-logout" onclick="logout()">Logout</button>
+  <div class="d-flex min-vh-100">
+    <!-- Sidebar -->
+    <div id="sidebar">
+      <div class="brand d-flex align-items-center gap-2">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <path d="M12 2C6.5 2 3 7 3 12c0 3.5 2 6.5 5 8l1-3c-1.5-1-2.5-2.8-2.5-5
+                   0-3.5 2.5-7 5.5-7s5.5 3.5 5.5 7c0 2.2-1 4-2.5 5l1 3c3-1.5 5-4.5
+                   5-8 0-5-3.5-10-9.5-10z"
+                fill="#A7F3D0"/>
+        </svg>
+        Krishna Enterprises
+      </div>
+      <nav class="nav flex-column mt-3">
+        <a href="/admin/dashboard" class="nav-link">
+          <i data-lucide="layout-dashboard" style="width:18px;height:18px;"></i>
+          Dashboard
+        </a>
+        <a href="/admin/products" class="nav-link active">
+          <i data-lucide="package" style="width:18px;height:18px;"></i>
+          Products
+        </a>
+        <a href="/admin/settings" class="nav-link">
+          <i data-lucide="settings" style="width:18px;height:18px;"></i>
+          Settings
+        </a>
+      </nav>
+      <button class="btn btn-outline-light btn-sm logout-btn w-80" onclick="logout()">
+        <i data-lucide="log-out" style="width:16px;height:16px;"></i>
+        Logout
+      </button>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+      <div class="top-bar">
+        <h5 class="mb-0 fw-semibold">Products Management</h5>
+        <span style="font-size:13px;color:var(--ke-text-muted);">Admin Panel</span>
+      </div>
+
+      <div class="p-4">
+        <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+          <h4 class="mb-0 fw-semibold">All Products</h4>
+          <div class="d-flex gap-2">
+            <div class="input-group" style="width:250px;">
+              <span class="input-group-text bg-white">
+                <i data-lucide="search" style="width:16px;height:16px;color:#7A7870;"></i>
+              </span>
+              <input type="text" id="searchInput" class="form-control" placeholder="Search products..." oninput="searchProducts()">
+            </div>
+            <button class="btn btn-primary" onclick="openModal()">
+              <i data-lucide="plus" style="width:16px;height:16px;"></i>
+              Add Product
+            </button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="table-responsive">
+            <table class="table table-hover mb-0">
+              <thead class="table-light">
+                <tr>
+                  <th style="font-size:13px;font-weight:600;">Image</th>
+                  <th style="font-size:13px;font-weight:600;">Name</th>
+                  <th style="font-size:13px;font-weight:600;">SKU</th>
+                  <th style="font-size:13px;font-weight:600;">Status</th>
+                  <th style="font-size:13px;font-weight:600;">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="productsTable"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
-  
-  <table>
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Images</th>
-        <th>Name</th>
-        <th>Slug</th>
-        <th>SKU</th>
-        <th>Status</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody id="productsTable"></tbody>
-  </table>
 
+  <!-- Add/Edit Modal -->
   <div class="modal" id="productModal">
     <div class="modal-content">
-      <h2 id="modalTitle">Add Product</h2>
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h5 class="font-brand mb-0" id="modalTitle">Add Product</h5>
+        <button type="button" class="btn-close" onclick="closeModal()"></button>
+      </div>
       <form id="productForm">
         <input type="hidden" id="productId">
-        <div class="form-group">
-          <label>Name</label>
-          <input type="text" id="productName" required>
+        <div class="mb-3">
+          <label class="form-label">Product Name *</label>
+          <input type="text" id="productName" class="form-control" required>
         </div>
-        <div class="form-group">
-          <label>Description</label>
-          <textarea id="productDescription"></textarea>
+        <div class="mb-3">
+          <label class="form-label">Description</label>
+          <textarea id="productDescription" class="form-control" rows="3"></textarea>
         </div>
-        <div class="form-group">
-          <label>Images (max 5)</label>
-          <input type="file" id="productImages" class="file-input" multiple accept="image/*">
+        <div class="mb-3">
+          <label class="form-label">Images (max 5)</label>
+          <input type="file" id="productImages" class="form-control" multiple accept="image/*">
+          <div id="uploadLoader" style="display:none;color:#666;font-size:13px;margin-top:5px;">Uploading images...</div>
           <div class="image-previews" id="imagePreviews"></div>
         </div>
-        <button type="submit" class="btn btn-success">Save</button>
-        <button type="button" class="btn btn-danger" onclick="closeModal()">Cancel</button>
+        <div class="d-flex gap-2">
+          <button type="submit" class="btn btn-primary flex-grow-1">Save</button>
+          <button type="button" class="btn btn-outline-secondary" onclick="closeModal()">Cancel</button>
+        </div>
       </form>
     </div>
   </div>
@@ -91,13 +300,13 @@
     const token = localStorage.getItem('adminToken');
     if (!token) { window.location.href = '/admin'; }
 
-    let productData = {
-      id: null,
-      name: '',
-      description: '',
-      images: [],
-      newFiles: []
-    };
+    let productData = { id: null, name: '', description: '', existingImages: [], uploadedUrls: [] };
+    let isUploading = false;
+
+    function showUploadLoader(show) {
+      const loader = document.getElementById('uploadLoader');
+      if (loader) loader.style.display = show ? 'block' : 'none';
+    }
 
     async function apiCall(url, method = 'GET', body = null) {
       const headers = { 'Authorization': `Bearer ${token}` };
@@ -121,47 +330,100 @@
       }
     }
 
+    function showImagePreview(imgSrc, totalImages) {
+      let html = `<img src="${imgSrc}" class="img-fluid" style="max-height:400px;object-fit:contain;">`;
+      html += `<p class="mt-2 text-muted">Total images: ${totalImages}</p>`;
+      document.getElementById('imagePreviewContent').innerHTML = html;
+    }
+
     async function loadProducts() {
       try {
-        const products = await apiCall('/admin/products');
+        const products = await apiCall('/api/admin/products');
         const tbody = document.getElementById('productsTable');
         tbody.innerHTML = products.map(p => {
           const images = typeof p.images === 'string' ? JSON.parse(p.images) : p.images;
           const imgHtml = images.length 
-            ? `<img src="${images[0]}" class="product-img" onclick="alert('Images: ${images.length}')">` 
-            : '<div style="width:60px;height:60px;background:#ddd;border-radius:4px;"></div>';
+            ? `<img src="${images[0]}" class="product-img" data-bs-toggle="modal" data-bs-target="#imageModal" onclick="showImagePreview('${images[0]}', ${images.length})">` 
+            : `<div class="product-img bg-light d-flex align-items-center justify-content-center"><i data-lucide="image" style="width:16px;height:16px;color:#ccc;"></i></div>`;
           const isActive = p.is_active ? 1 : 0;
           return `
             <tr>
-              <td>${p.id}</td>
-              <td>${imgHtml}</td>
-              <td>${p.name}</td>
-              <td>${p.slug || '-'}</td>
-              <td>${p.sku || '-'}</td>
-              <td>
+              <td style="vertical-align:middle;">${imgHtml}</td>
+              <td style="vertical-align:middle;font-weight:500;">${p.name}</td>
+              <td style="vertical-align:middle;color:var(--ke-text-muted);font-size:13px;">${p.sku || '-'}</td>
+              <td style="vertical-align:middle;">
                 <label class="toggle-switch">
                   <input type="checkbox" ${isActive ? 'checked' : ''} onchange="toggleStatus(${p.id}, this.checked)">
                   <span class="toggle-slider"></span>
                 </label>
               </td>
-              <td>
-                <button class="btn btn-primary" onclick='editProduct(${p.id}, "${p.name}", ${JSON.stringify(p.description || '').replace(/"/g, '&quot;')}, ${JSON.stringify(images)})'>Edit</button>
-                <button class="btn btn-danger" onclick="deleteProduct(${p.id})">Delete</button>
+              <td style="vertical-align:middle;">
+                <button class="btn btn-sm btn-outline-primary me-1" onclick='editProduct(${p.id}, "${p.name}", ${JSON.stringify(p.description || '').replace(/"/g, '&quot;')}, ${JSON.stringify(images)})'>
+                  <i data-lucide="pencil" style="width:14px;height:14px;"></i>
+                </button>
+                <button class="btn btn-sm btn-outline-danger" onclick="deleteProduct(${p.id})">
+                  <i data-lucide="trash-2" style="width:14px;height:14px;"></i>
+                </button>
               </td>
             </tr>
           `;
         }).join('');
+        lucide.createIcons();
       } catch (err) {
-        alert('Error loading products: ' + err.message);
+        Swal.fire({ icon: 'error', title: 'Error', text: 'Failed to load products. Please try again.', confirmButtonColor: '#1A3C2E' });
       }
+    }
+
+    let searchTimeout;
+    async function searchProducts() {
+      clearTimeout(searchTimeout);
+      searchTimeout = setTimeout(async () => {
+        const searchTerm = document.getElementById('searchInput').value.trim();
+        try {
+          const url = searchTerm ? '/api/admin/products?search=' + encodeURIComponent(searchTerm) : '/api/admin/products';
+          const products = await apiCall(url);
+          const tbody = document.getElementById('productsTable');
+          tbody.innerHTML = products.map(p => {
+            const images = typeof p.images === 'string' ? JSON.parse(p.images) : p.images;
+            const imgHtml = images.length 
+              ? `<img src="${images[0]}" class="product-img" data-bs-toggle="modal" data-bs-target="#imageModal" onclick="showImagePreview('${images[0]}', ${images.length})">` 
+              : `<div class="product-img bg-light d-flex align-items-center justify-content-center"><i data-lucide="image" style="width:16px;height:16px;color:#ccc;"></i></div>`;
+            const isActive = p.is_active ? 1 : 0;
+            return `
+              <tr>
+                <td style="vertical-align:middle;">${imgHtml}</td>
+                <td style="vertical-align:middle;font-weight:500;">${p.name}</td>
+                <td style="vertical-align:middle;color:var(--ke-text-muted);font-size:13px;">${p.sku || '-'}</td>
+                <td style="vertical-align:middle;">
+                  <label class="toggle-switch">
+                    <input type="checkbox" ${isActive ? 'checked' : ''} onchange="toggleStatus(${p.id}, this.checked)">
+                    <span class="toggle-slider"></span>
+                  </label>
+                </td>
+                <td style="vertical-align:middle;">
+                  <button class="btn btn-sm btn-outline-primary me-1" onclick='editProduct(${p.id}, "${p.name}", ${JSON.stringify(p.description || '').replace(/"/g, '&quot;')}, ${JSON.stringify(images)})'>
+                    <i data-lucide="pencil" style="width:14px;height:14px;"></i>
+                  </button>
+                  <button class="btn btn-sm btn-outline-danger" onclick="deleteProduct(${p.id})">
+                    <i data-lucide="trash-2" style="width:14px;height:14px;"></i>
+                  </button>
+                </td>
+              </tr>
+            `;
+          }).join('');
+          lucide.createIcons();
+        } catch (err) {
+          Swal.fire({ icon: 'error', title: 'Search Error', text: 'Failed to search products. Please try again.', confirmButtonColor: '#1A3C2E' });
+        }
+      }, 300);
     }
 
     async function toggleStatus(id, isActive) {
       try {
-        await apiCall('/admin/products/' + id + '/toggle', 'POST');
+        await apiCall('/api/admin/products/' + id + '/toggle', 'POST');
         loadProducts();
       } catch (err) {
-        alert(err.message);
+        Swal.fire({ icon: 'error', title: 'Error', text: err.message, confirmButtonColor: '#1A3C2E' });
         loadProducts();
       }
     }
@@ -174,12 +436,21 @@
       document.getElementById('productDescription').value = description;
       document.getElementById('productImages').value = '';
       
-      productData = {
-        id: id,
-        name: name,
-        description: description,
-        images: images || [],
-        newFiles: []
+      let existingImages = [];
+      if (images && images.length > 0) {
+        if (typeof images === 'string') {
+          try { existingImages = JSON.parse(images); } catch(e) { existingImages = []; }
+        } else if (Array.isArray(images)) {
+          existingImages = images;
+        }
+      }
+      
+      productData = { 
+        id: id, 
+        name: name, 
+        description: description, 
+        existingImages: existingImages,
+        uploadedUrls: [] 
       };
       renderImagePreviews();
     }
@@ -190,7 +461,8 @@
 
     function renderImagePreviews() {
       const container = document.getElementById('imagePreviews');
-      container.innerHTML = productData.images.map((img, i) => `
+      let allImages = [...productData.existingImages, ...productData.uploadedUrls];
+      container.innerHTML = allImages.map((img, i) => `
         <div class="img-wrap">
           <img src="${img}" alt="Preview">
           <button type="button" class="remove-img" onclick="removeImage(${i})">×</button>
@@ -199,14 +471,14 @@
     }
 
     function removeImage(index) {
-      const img = productData.images[index];
-      if (img && img.startsWith('blob:')) {
-        const blobIndex = productData.images.indexOf(img);
-        if (blobIndex >= 0 && blobIndex < productData.newFiles.length) {
-          productData.newFiles.splice(blobIndex, 1);
+      if (index < productData.existingImages.length) {
+        productData.existingImages.splice(index, 1);
+      } else {
+        const newFileIndex = index - productData.existingImages.length;
+        if (newFileIndex >= 0 && newFileIndex < productData.uploadedUrls.length) {
+          productData.uploadedUrls.splice(newFileIndex, 1);
         }
       }
-      productData.images.splice(index, 1);
       renderImagePreviews();
     }
 
@@ -215,29 +487,58 @@
     }
 
     async function deleteProduct(id) {
-      if (!confirm('Delete this product?')) return;
+      const result = await Swal.fire({ icon: 'warning', title: 'Delete Product', text: 'Are you sure you want to delete this product?', confirmButtonColor: '#dc3545', cancelButtonColor: '#6c757d', showCancelButton: true, confirmButtonText: 'Yes, Delete', cancelButtonText: 'Cancel' });
+      if (!result.isConfirmed) return;
       try {
-        await apiCall('/admin/products/' + id, 'DELETE');
+        await apiCall('/api/admin/products/' + id, 'DELETE');
         loadProducts();
+        Swal.fire({ icon: 'success', title: 'Deleted', text: 'Product has been deleted successfully.', confirmButtonColor: '#1A3C2E' });
       } catch (err) {
-        alert(err.message);
+        Swal.fire({ icon: 'error', title: 'Error', text: err.message, confirmButtonColor: '#1A3C2E' });
       }
     }
 
-    document.getElementById('productImages').addEventListener('change', function() {
-      const files = Array.from(this.files);
-      const remaining = 5 - productData.images.length;
+    document.getElementById('productImages').addEventListener('change', async function(e) {
+      if (isUploading) return;
+      const files = Array.from(e.target.files).slice(0, 5);
+      if (files.length === 0) return;
+
+      const currentCount = productData.existingImages.length + productData.uploadedUrls.length;
+      const remaining = 5 - currentCount;
       if (files.length > remaining) {
-        alert(`Max 5 images. You can add ${remaining} more.`);
+        Swal.fire({ icon: 'warning', title: 'Image Limit', text: `Maximum 5 images allowed. You can add ${remaining} more image(s).`, confirmButtonColor: '#1A3C2E' });
         this.value = '';
         return;
       }
-      files.forEach(file => {
-        productData.newFiles.push(file);
-        productData.images.push(URL.createObjectURL(file));
-      });
-      renderImagePreviews();
-      this.value = '';
+
+      const formData = new FormData();
+      files.forEach(file => formData.append('images', file));
+
+      isUploading = true;
+      showUploadLoader(true);
+      try {
+        const res = await fetch('/api/upload/images', {
+          method: 'POST',
+          headers: { 'Authorization': `Bearer ${token}` },
+          body: formData
+        });
+        const data = await res.json();
+
+        if (data.success && data.images) {
+          data.images.forEach(img => {
+            productData.uploadedUrls.push(img.imageUrl);
+          });
+          renderImagePreviews();
+        } else {
+          Swal.fire({ icon: 'error', title: 'Upload Failed', text: data.error || 'Unknown error occurred during upload.', confirmButtonColor: '#1A3C2E' });
+        }
+      } catch (err) {
+        Swal.fire({ icon: 'error', title: 'Upload Error', text: err.message, confirmButtonColor: '#1A3C2E' });
+      } finally {
+        isUploading = false;
+        showUploadLoader(false);
+        this.value = '';
+      }
     });
 
     document.getElementById('productForm').onsubmit = async (e) => {
@@ -246,27 +547,23 @@
       const name = document.getElementById('productName').value;
       const description = document.getElementById('productDescription').value;
       
+      const allImages = [...productData.existingImages, ...productData.uploadedUrls];
+      
       const formData = new FormData();
       formData.append('name', name);
       formData.append('description', description);
-      
-      const existingUrls = productData.images.filter(img => !img.startsWith('blob:'));
-      formData.append('existingImages', JSON.stringify(existingUrls));
-      
-      productData.newFiles.forEach(file => {
-        formData.append('images', file);
-      });
+      formData.append('existingImages', JSON.stringify(allImages));
       
       try {
         if (id) {
-          await apiCall('/admin/products/' + id, 'POST', formData);
+          await apiCall('/api/admin/products/' + id, 'POST', formData);
         } else {
-          await apiCall('/admin/products', 'POST', formData);
+          await apiCall('/api/admin/products', 'POST', formData);
         }
         closeModal();
         loadProducts();
       } catch (err) {
-        alert('Error: ' + err.message);
+        Swal.fire({ icon: 'error', title: 'Error', text: 'Failed to save product. Please try again.', confirmButtonColor: '#1A3C2E' });
       }
     };
 
@@ -275,7 +572,73 @@
       window.location.href = '/admin';
     }
 
+    const sidebar = document.getElementById('sidebar');
+    const toggle = document.getElementById('sidebarToggle');
+    if (toggle) toggle.addEventListener('click', () => {
+      sidebar.style.width = sidebar.style.width === '0px' ? '240px' : '0px';
+      sidebar.style.overflow = sidebar.style.width === '0px' ? 'hidden' : '';
+    });
+
     loadProducts();
   </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>lucide.createIcons();</script>
+
+  <!-- Mobile Header -->
+  <div class="mobile-header">
+    <a href="/">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+        <path d="M12 2C6.5 2 3 7 3 12c0 3.5 2 6.5 5 8l1-3c-1.5-1-2.5-2.8-2.5-5
+                 0-3.5 2.5-7 5.5-7s5.5 3.5 5.5 7c0 2.2-1 4-2.5 5l1 3c3-1.5 5-4.5
+                 5-8 0-5-3.5-10-9.5-10z"
+              fill="#A7F3D0"/>
+      </svg>
+      <span>Krishna Enterprises</span>
+    </a>
+  </div>
+
+  <!-- Mobile Bottom Navigation -->
+  <nav class="mobile-bottom-nav">
+    <a href="/admin/dashboard" class="nav-dashboard">
+      <i data-lucide="layout-dashboard" style="width:20px;height:20px;"></i>
+      <span>Dashboard</span>
+    </a>
+    <a href="/admin/products" class="nav-products">
+      <i data-lucide="package" style="width:20px;height:20px;"></i>
+      <span>Products</span>
+    </a>
+    <a href="/admin/settings" class="nav-settings">
+      <i data-lucide="settings" style="width:20px;height:20px;"></i>
+      <span>Settings</span>
+    </a>
+    <a href="#" onclick="logout()" class="nav-logout">
+      <i data-lucide="log-out" style="width:20px;height:20px;"></i>
+      <span>Logout</span>
+    </a>
+  </nav>
+
+  <script>
+    document.querySelectorAll('.mobile-bottom-nav a').forEach(link => {
+      const href = link.getAttribute('href');
+      if (href && (href === window.location.pathname || window.location.pathname.startsWith(href + '/'))) {
+        link.classList.add('active');
+      }
+    });
+    lucide.createIcons();
+  </script>
+
+  <!-- Image Preview Modal -->
+  <div class="modal fade" id="imageModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Product Image</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body text-center" id="imagePreviewContent"></div>
+      </div>
+    </div>
+  </div>
 </body>
 </html>

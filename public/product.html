@@ -4,68 +4,279 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Product Details - Krishna Enterprises</title>
+
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: Arial, sans-serif; background: #f5f5f5; }
-    header { background: #333; color: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; }
-    header h1 { font-size: 24px; }
-    header nav a { color: white; text-decoration: none; margin: 0 15px; }
-    header nav a:hover { text-decoration: underline; }
-    .cart-btn { background: #28a745; color: white; padding: 8px 15px; border: none; border-radius: 4px; cursor: pointer; position: relative; }
-    .cart-count { position: absolute; top: -8px; right: -8px; background: #dc3545; border-radius: 50%; width: 20px; height: 20px; font-size: 12px; display: flex; align-items: center; justify-content: center; }
-    .container { max-width: 800px; margin: 0 auto; padding: 20px; }
-    .product-detail { background: white; border-radius: 8px; padding: 30px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-    .product-detail .main-image { width: 100%; max-height: 400px; object-fit: cover; border-radius: 8px; margin-bottom: 20px; }
-    .product-detail h2 { margin-bottom: 15px; color: #333; }
-    .product-detail .sku { font-size: 14px; color: #666; margin-bottom: 15px; }
-    .product-detail .description { color: #555; line-height: 1.6; margin-bottom: 20px; }
-    .product-detail .all-images { display: flex; gap: 10px; flex-wrap: wrap; }
-    .product-detail .all-images img { width: 80px; height: 80px; object-fit: cover; border-radius: 4px; cursor: pointer; border: 2px solid transparent; }
-    .product-detail .all-images img:hover { border-color: #007bff; }
-    .loading { text-align: center; padding: 50px; color: #666; }
-    .error { text-align: center; padding: 50px; color: #dc3545; }
-    .back-link { display: inline-block; margin-bottom: 20px; color: #007bff; text-decoration: none; }
-    .back-link:hover { text-decoration: underline; }
-    .qty-control { display: flex; align-items: center; gap: 15px; margin: 20px 0; }
-    .qty-control label { font-weight: bold; }
-    .qty-control button { width: 35px; height: 35px; border: 1px solid #ddd; background: white; cursor: pointer; border-radius: 4px; font-size: 18px; }
-    .qty-control button:hover { background: #f0f0f0; }
-    .qty-control .remove-btn { width: auto; padding: 0 15px; background: #dc3545; color: white; border: none; }
-    .qty-control .remove-btn:hover { background: #c82333; }
-    .qty-control span { font-size: 20px; font-weight: bold; min-width: 40px; text-align: center; }
-    .in-cart-label { font-size: 14px; color: #28a745; margin-bottom: 5px; font-weight: bold; }
-    .btn-group { display: flex; gap: 15px; margin-top: 20px; flex-wrap: wrap; }
-    .btn { padding: 12px 25px; border: none; border-radius: 4px; cursor: pointer; text-decoration: none; display: inline-block; font-size: 14px; }
-    .btn-primary { background: #007bff; color: white; }
-    .btn-primary:hover { background: #0056b3; }
-    .btn-whatsapp { background: #25D366; color: white; }
-    .btn-whatsapp:hover { background: #20b558; }
-    .btn-cart { background: #28a745; color: white; }
-    .btn-cart:hover { background: #218838; }
+    :root {
+      --ke-green:         #1A3C2E;
+      --ke-green-mid:     #2D5C45;
+      --ke-green-light:   #E8F5EE;
+      --ke-green-dark:    #0D2218;
+      --ke-gold:          #B8860B;
+      --ke-gold-light:    #FDF6E3;
+      --ke-gold-muted:    #D4A843;
+      --ke-surface:       #FAFAF8;
+      --ke-surface-alt:   #F5F4F0;
+      --ke-border:        #E8E6E0;
+      --ke-text:          #1C1C1A;
+      --ke-text-muted:    #7A7870;
+      --ke-whatsapp:      #1DA851;
+      --bs-primary:       #1A3C2E;
+      --bs-primary-rgb:   26, 60, 46;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--ke-surface);
+      color: var(--ke-text);
+      font-size: 15px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    h1, h2, .font-brand { font-family: 'Playfair Display', serif; }
+
+    .btn-primary { background-color: var(--ke-green); border-color: var(--ke-green); }
+    .btn-primary:hover { background-color: var(--ke-green-mid); border-color: var(--ke-green-mid); }
+    .btn-outline-primary { color: var(--ke-green); border-color: var(--ke-green); }
+    .btn-outline-primary:hover { background-color: var(--ke-green); border-color: var(--ke-green); }
+    .text-primary { color: var(--ke-green) !important; }
+    .bg-primary { background-color: var(--ke-green) !important; }
+    .border-primary { border-color: var(--ke-green) !important; }
+
+    .btn-warning { background-color: var(--ke-gold); border-color: var(--ke-gold); color: #fff8e8; }
+    .btn-warning:hover { background-color: #9A7009; border-color: #9A7009; color: #fff; }
+    .text-warning { color: var(--ke-gold) !important; }
+
+    .btn-whatsapp { background-color: var(--ke-whatsapp); color: #fff; border: none; }
+    .btn-whatsapp:hover { background-color: #178A42; color: #fff; }
+
+    .card { border: 1px solid var(--ke-border); border-radius: 12px; transition: all 0.25s ease; }
+    .card:hover { box-shadow: 0 8px 24px rgba(26,60,46,0.10); transform: translateY(-2px); border-color: #C4DDD2; }
+    .card-img-top { border-radius: 12px 12px 0 0; height: 200px; object-fit: cover; }
+
+    .ke-navbar { background-color: var(--ke-green-dark) !important; }
+    .ke-navbar .navbar-brand { font-family: 'Playfair Display', serif; font-weight: 600; color: #fff !important; }
+    .ke-navbar .nav-link { color: rgba(255,255,255,0.85) !important; font-size: 14px; font-weight: 500; }
+    .ke-navbar .nav-link:hover, .ke-navbar .nav-link.active { color: var(--ke-gold-muted) !important; }
+    .ke-tagline { font-size: 11px; color: #A7F3D0; letter-spacing: 0.02em; }
+
+    .ke-hero-compact { background-color: var(--ke-green); padding: 48px 0; }
+
+    .ke-footer { background-color: var(--ke-green-dark); border-top: 3px solid var(--ke-gold-muted); }
+
+    .form-control:focus, .form-select:focus {
+      border-color: var(--ke-green-mid);
+      box-shadow: 0 0 0 3px rgba(26,60,46,0.10);
+    }
+
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--ke-surface); }
+    ::-webkit-scrollbar-thumb { background: #C4DDD2; border-radius: 10px; }
+
+    ::selection { background: rgba(26,60,46,0.15); }
+
+    /* Mobile Top Navbar (without hamburger) */
+    .mobile-header {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: var(--ke-green-dark);
+      padding: 10px 15px;
+      z-index: 1001;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    }
+    .mobile-header .navbar-brand {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #fff !important;
+      text-decoration: none;
+    }
+    .mobile-header .navbar-brand span {
+      font-family: 'Playfair Display', serif;
+      font-weight: 600;
+      font-size: 16px;
+    }
+    .mobile-header .ke-tagline {
+      font-size: 10px;
+      color: #A7F3D0;
+    }
+
+    /* Bottom Navigation - Mobile Only */
+    .mobile-bottom-nav {
+      display: none;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: var(--ke-green-dark);
+      border-top: 1px solid rgba(255,255,255,0.1);
+      padding: 16px 0;
+      z-index: 1000;
+      box-shadow: 0 -2px 10px rgba(0,0,0,0.2);
+    }
+    .mobile-bottom-nav a {
+      flex: 1;
+      text-align: center;
+      color: rgba(255,255,255,0.6);
+      text-decoration: none;
+      font-size: 11px;
+      padding: 4px 0;
+      transition: color 0.2s;
+    }
+    .mobile-bottom-nav a.active,
+    .mobile-bottom-nav a:hover {
+      color: var(--ke-gold-muted);
+    }
+    .mobile-bottom-nav a i {
+      display: block;
+      margin: 0 auto 2px;
+    }
+    .mobile-bottom-nav .nav-cart { position: relative; }
+
+    @media (max-width: 768px) {
+      .mobile-header { display: block; }
+      .mobile-bottom-nav { display: flex; }
+      .ke-navbar { display: none !important; }
+      body { padding-bottom: 70px; padding-top: 55px; }
+      .ke-footer { display: none !important; }
+    }
   </style>
 </head>
 <body>
-  <header>
-    <h1>Krishna Enterprises</h1>
-    <nav>
-      <a href="/">Home</a>
-      <a href="/admin">Admin</a>
-      <button class="cart-btn" onclick="window.open('/', '_blank')">
-        Cart
-        <span class="cart-count" id="cartCount">0</span>
+
+  <!-- Mobile Header (shown only on mobile) -->
+  <div class="mobile-header">
+    <a class="navbar-brand" href="/">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+        <path d="M12 2C6.5 2 3 7 3 12c0 3.5 2 6.5 5 8l1-3c-1.5-1-2.5-2.8-2.5-5
+                 0-3.5 2.5-7 5.5-7s5.5 3.5 5.5 7c0 2.2-1 4-2.5 5l1 3c3-1.5 5-4.5
+                 5-8 0-5-3.5-10-9.5-10z"
+              fill="#A7F3D0"/>
+      </svg>
+      <div>
+        <span>Krishna Enterprises</span>
+        <div class="ke-tagline">Your Trusted Stationery Partner</div>
+      </div>
+    </a>
+  </div>
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg ke-navbar sticky-top">
+    <div class="container">
+      <a class="navbar-brand d-flex flex-column" href="/">
+        <span class="d-flex align-items-center gap-2">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+            <path d="M12 2C6.5 2 3 7 3 12c0 3.5 2 6.5 5 8l1-3c-1.5-1-2.5-2.8-2.5-5
+                     0-3.5 2.5-7 5.5-7s5.5 3.5 5.5 7c0 2.2-1 4-2.5 5l1 3c3-1.5 5-4.5
+                     5-8 0-5-3.5-10-9.5-10z"
+                  fill="#A7F3D0"/>
+          </svg>
+          Krishna Enterprises
+        </span>
+        <small class="ke-tagline">Your Trusted Stationery Partner</small>
+      </a>
+      <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#keNav">
+        <i data-lucide="menu" style="color:#fff;width:22px;height:22px;"></i>
       </button>
-    </nav>
-  </header>
-  
-  <div class="container">
-    <a href="/" class="back-link" target="_blank">&larr; Back to Products</a>
-    <div class="product-detail" id="productDetail">
-      <div class="loading">Loading product...</div>
+      <div class="collapse navbar-collapse" id="keNav">
+        <ul class="navbar-nav mx-auto gap-lg-2">
+          <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="/products">Products</a></li>
+          <li class="nav-item"><a class="nav-link" href="/about">About Us</a></li>
+          <li class="nav-item"><a class="nav-link" href="/contact">Contact</a></li>
+        </ul>
+        <a href="/cart" class="btn btn-sm btn-warning position-relative ms-lg-3">
+          <i data-lucide="shopping-cart" style="width:16px;height:16px;"></i>
+          <span class="ms-1 d-none d-lg-inline">Cart</span>
+          <span id="cartBadge" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-white text-warning" style="font-size:10px;">0</span>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Product Detail -->
+  <div class="container py-5">
+    <a href="/products" class="btn btn-outline-primary mb-4">
+      <i data-lucide="arrow-left" style="width:16px;height:16px;"></i>
+      Back to Products
+    </a>
+    <div class="card p-4" id="productDetail">
+      <div class="text-center py-5">
+        <i data-lucide="loader-2" class="animate-spin" style="width:48px;height:48px;color:var(--ke-green);"></i>
+        <p class="mt-3 text-muted">Loading product...</p>
+      </div>
     </div>
   </div>
 
+  <!-- Footer -->
+  <footer class="ke-footer text-white pt-5 pb-3 mt-5">
+    <div class="container">
+      <div class="row g-4">
+        <div class="col-12 col-md-4">
+          <h5 class="font-brand text-white mb-2">Krishna Enterprises</h5>
+          <p class="text-white-50" style="font-size:13px;line-height:1.7;">Supplying quality stationery products to retailers and businesses across Gujarat since 2005. Trusted by 500+ shops.</p>
+          <a href="https://wa.me/919876543210" class="btn btn-whatsapp btn-sm mt-2">
+            <i data-lucide="message-circle" style="width:14px;height:14px;"></i>
+            <span class="ms-1">Chat on WhatsApp</span>
+          </a>
+        </div>
+        <div class="col-6 col-md-2 offset-md-1">
+          <h6 class="text-white mb-3" style="font-size:13px;letter-spacing:0.08em;text-transform:uppercase;">Quick Links</h6>
+          <ul class="list-unstyled" style="font-size:14px;">
+            <li class="mb-2"><a href="/" class="text-white-50 text-decoration-none">Home</a></li>
+            <li class="mb-2"><a href="/products" class="text-white-50 text-decoration-none">Products</a></li>
+            <li class="mb-2"><a href="/about" class="text-white-50 text-decoration-none">About Us</a></li>
+            <li class="mb-2"><a href="/contact" class="text-white-50 text-decoration-none">Contact</a></li>
+            
+          </ul>
+        </div>
+        <div class="col-12 col-md-4 offset-md-1">
+          <h6 class="text-white mb-3" style="font-size:13px;letter-spacing:0.08em;text-transform:uppercase;">Contact Info</h6>
+          <ul class="list-unstyled" style="font-size:14px;">
+            <li class="d-flex gap-2 mb-2 text-white-50">
+              <i data-lucide="map-pin" style="width:15px;height:15px;flex-shrink:0;margin-top:2px;color:#A7F3D0;"></i>
+              Shop No. 12, Stationery Market, Gondal Road, Rajkot, Gujarat — 360001
+            </li>
+            <li class="d-flex gap-2 mb-2 text-white-50">
+              <i data-lucide="phone" style="width:15px;height:15px;flex-shrink:0;color:#A7F3D0;"></i>
+              +91 98765 43210
+            </li>
+            <li class="d-flex gap-2 mb-2 text-white-50">
+              <i data-lucide="mail" style="width:15px;height:15px;flex-shrink:0;color:#A7F3D0;"></i>
+              krishnaenterprises@gmail.com
+            </li>
+            <li class="d-flex gap-2 mb-2 text-white-50">
+              <i data-lucide="clock" style="width:15px;height:15px;flex-shrink:0;color:#A7F3D0;"></i>
+              Mon–Sat: 9:00 AM – 7:00 PM
+            </li>
+          </ul>
+        </div>
+      </div>
+      <hr style="border-color:rgba(255,255,255,0.1);margin-top:32px;">
+      <div class="d-flex flex-column flex-md-row justify-content-between align-items-center" style="font-size:13px;color:rgba(255,255,255,0.4);">
+        <span>© 2025 Krishna Enterprises. All rights reserved.</span>
+        <span>Made with care for our valued customers</span>
+      </div>
+    </div>
+  </footer>
+
   <script>
-    let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+    const CART_KEY = 'ke_cart';
+    let cart = JSON.parse(localStorage.getItem(CART_KEY) || '[]');
     let currentProduct = null;
     let whatsappNumber = '';
     let selectedQty = 1;
@@ -77,13 +288,16 @@
     }
 
     function saveCart() {
-      localStorage.setItem('cart', JSON.stringify(cart));
+      localStorage.setItem(CART_KEY, JSON.stringify(cart));
       updateCartCount();
     }
 
     function updateCartCount() {
       const total = cart.reduce((sum, p) => sum + (p.quantity || 1), 0);
-      document.getElementById('cartCount').textContent = total;
+      const badge = document.getElementById('cartBadge');
+      if (badge) badge.textContent = total;
+      const mobileBadge = document.getElementById('mobileCartBadge');
+      if (mobileBadge) mobileBadge.textContent = total;
     }
 
     function getCartItem() {
@@ -104,14 +318,16 @@
     async function loadProduct() {
       const slug = getSlugFromUrl();
       if (!slug) {
-        document.getElementById('productDetail').innerHTML = '<div class="error">Product not found</div>';
+        document.getElementById('productDetail').innerHTML = '<div class="text-center py-5"><i data-lucide="alert-circle" style="width:48px;height:48px;color:#dc3545;"></i><h5 class="mt-3 text-muted">Product not found</h5></div>';
+        lucide.createIcons();
         return;
       }
 
       try {
         const res = await fetch('/api/product/' + slug);
         if (!res.ok) {
-          document.getElementById('productDetail').innerHTML = '<div class="error">Product not found</div>';
+          document.getElementById('productDetail').innerHTML = '<div class="text-center py-5"><i data-lucide="alert-circle" style="width:48px;height:48px;color:#dc3545;"></i><h5 class="mt-3 text-muted">Product not found</h5></div>';
+          lucide.createIcons();
           return;
         }
         currentProduct = await res.json();
@@ -123,53 +339,86 @@
         
         const images = typeof currentProduct.images === 'string' ? JSON.parse(currentProduct.images) : currentProduct.images;
         
-        if (!images.length) {
-          document.getElementById('productDetail').innerHTML = '<div class="error">No images available</div>';
-          return;
+        let mainImageHtml = '';
+        let allImagesHtml = '';
+        
+        if (images.length > 0) {
+          const mainImage = images[0];
+          mainImageHtml = `<img id="mainImage" src="${mainImage}" alt="${currentProduct.name}" class="img-fluid rounded" style="width:100%;max-height:400px;object-fit:cover;">`;
+          allImagesHtml = images.length > 1 ? `<div class="d-flex gap-2 mt-3 flex-wrap">${images.map((img, i) => 
+            `<img src="${img}" onclick="document.getElementById('mainImage').src='${img}'" alt="Product image ${i+1}" class="img-thumbnail" style="width:80px;height:80px;object-fit:cover;cursor:pointer;border:2px solid transparent;" onmouseover="this.style.borderColor='var(--ke-green)'" onmouseout="this.style.borderColor='transparent'">`
+          ).join('')}</div>` : '';
+        } else {
+          mainImageHtml = `<div class="d-flex align-items-center justify-content-center bg-light rounded" style="width:100%;height:300px;"><div class="text-center"><i data-lucide="image-off" style="width:64px;height:64px;color:#C4DDD2;"></i><p class="mt-2 text-muted mb-0">No image available</p></div></div>`;
         }
-
-        let mainImage = images[0];
-        let allImagesHtml = images.map((img, i) => 
-          `<img src="${img}" onclick="document.getElementById('mainImage').src='${img}'" alt="Product image ${i+1}">`
-        ).join('');
 
         let buttonsHtml = '';
         if (whatsappNumber) {
-          const msg = `Hi Krishna Enterprises, I'm interested in: ${currentProduct.name} (SKU: ${currentProduct.sku}). Please share the price.`;
+          const msg = `Hi Krishna Enterprises, I'm interested in:\n- Product: ${currentProduct.name}\n- SKU: ${currentProduct.sku}\n- Quantity: ${selectedQty}\n\nPlease share the price and delivery details.`;
           buttonsHtml = `
-            <div class="btn-group">
-              <a href="https://wa.me/${whatsappNumber}?text=${encodeURIComponent(msg)}" class="btn btn-whatsapp" target="_blank">Get Quote on WhatsApp</a>
-              <button class="btn btn-cart" onclick="addToCart()">${showInCart ? 'Add More' : 'Add to Cart'}</button>
-              <a href="/" class="btn btn-primary" target="_blank">Back to Home</a>
+            <div class="d-flex flex-wrap gap-2 mt-4">
+              <a href="https://wa.me/${whatsappNumber}?text=${encodeURIComponent(msg)}" class="btn btn-whatsapp" target="_blank">
+                <i data-lucide="message-circle" style="width:16px;height:16px;"></i>
+                Get Quote on WhatsApp
+              </a>
+              <button class="btn btn-primary" onclick="addToCart()">
+                <i data-lucide="shopping-cart" style="width:16px;height:16px;"></i>
+                Add to Cart
+              </button>
+              <a href="/products" class="btn btn-outline-secondary">
+                <i data-lucide="arrow-left" style="width:16px;height:16px;"></i>
+                Back to Products
+              </a>
             </div>
           `;
         } else {
           buttonsHtml = `
-            <div class="btn-group">
-              <button class="btn btn-cart" onclick="addToCart()">${showInCart ? 'Add More' : 'Add to Cart'}</button>
-              <a href="/" class="btn btn-primary" target="_blank">Back to Home</a>
+            <div class="d-flex flex-wrap gap-2 mt-4">
+              <button class="btn btn-primary" onclick="addToCart()">
+                <i data-lucide="shopping-cart" style="width:16px;height:16px;"></i>
+                Add to Cart
+              </button>
+              <a href="/products" class="btn btn-outline-secondary">
+                <i data-lucide="arrow-left" style="width:16px;height:16px;"></i>
+                Back to Products
+              </a>
             </div>
           `;
         }
 
         document.getElementById('productDetail').innerHTML = `
-          <img id="mainImage" class="main-image" src="${mainImage}" alt="${currentProduct.name}">
-          <h2>${currentProduct.name}</h2>
-          <div class="sku"><strong>SKU:</strong> ${currentProduct.sku}</div>
-          <p class="description">${currentProduct.description || 'No description available'}</p>
-          ${images.length > 1 ? `<div class="all-images">${allImagesHtml}</div>` : ''}
-          ${showInCart ? `<div class="in-cart-label">In Cart: ${cartQty} item(s)</div>` : ''}
-          <div class="qty-control">
-            <label>Quantity:</label>
-            <button onclick="changeQty(-1)">-</button>
-            <span id="qty">${selectedQty}</span>
-            <button onclick="changeQty(1)">+</button>
-            ${showInCart ? `<button class="remove-btn" onclick="removeFromCart()">Remove</button>` : ''}
+          <div class="row">
+            <div class="col-12 col-md-6 mb-4 mb-md-0">
+              ${mainImageHtml}
+              ${allImagesHtml}
+            </div>
+            <div class="col-12 col-md-6">
+              ${currentProduct.is_active 
+                ? `<span class="badge bg-success mb-2">Available</span>`
+                : `<span class="badge bg-danger mb-2"><i data-lucide="alert-circle" style="width:12px;height:12px;"></i> Out of Stock</span>`
+              }
+              <h2 class="font-brand mb-2">${currentProduct.name}</h2>
+              <p class="text-muted mb-3"><i data-lucide="box" style="width:14px;height:14px;"></i> SKU: ${currentProduct.sku || 'N/A'}</p>
+              <p class="mb-4" style="line-height:1.7;">${currentProduct.description || 'No description available'}</p>
+              ${!currentProduct.is_active ? `<div class="alert alert-warning mb-3"><i data-lucide="info" style="width:16px;height:16px;"></i> This product is currently unavailable. Please check back later or contact us for alternative options.</div>` : ''}
+              ${showInCart ? `<div class="text-success mb-3" style="font-size:14px;font-weight:500;"><i data-lucide="shopping-cart" style="width:14px;height:14px;"></i> In Cart: ${cartQty} item(s)</div>` : ''}
+              ${currentProduct.is_active ? `
+              <div class="d-flex align-items-center gap-3 mb-4">
+                <span class="fw-semibold">Quantity:</span>
+                <button class="btn btn-outline-secondary" style="width:36px;height:36px;padding:0;" onclick="changeQty(-1)">−</button>
+                <span id="qty" class="fw-bold" style="min-width:30px;text-align:center;font-size:18px;">${selectedQty}</span>
+                <button class="btn btn-outline-secondary" style="width:36px;height:36px;padding:0;" onclick="changeQty(1)">+</button>
+                ${showInCart ? `<button class="btn btn-outline-danger btn-sm" onclick="removeFromCart()">Remove</button>` : ''}
+              </div>
+              ` : ''}
+              ${buttonsHtml}
+            </div>
           </div>
-          ${buttonsHtml}
         `;
+        lucide.createIcons();
       } catch (err) {
-        document.getElementById('productDetail').innerHTML = '<div class="error">Error loading product</div>';
+        document.getElementById('productDetail').innerHTML = '<div class="text-center py-5"><i data-lucide="alert-triangle" style="width:48px;height:48px;color:#dc3545;"></i><h5 class="mt-3 text-muted">Error loading product</h5></div>';
+        lucide.createIcons();
       }
     }
 
@@ -193,22 +442,29 @@
     }
 
     function updateInCartDisplay(qty) {
-      const inCartLabel = document.querySelector('.in-cart-label');
-      const cartBtn = document.querySelector('.btn-cart');
-      const removeBtn = document.querySelector('.remove-btn');
+      const inCartLabel = document.querySelector('.text-success');
+      const cartBtn = document.querySelector('.btn-primary');
+      const removeBtn = document.querySelector('.btn-outline-danger');
       
-      if (inCartLabel) inCartLabel.textContent = `In Cart: ${qty} item(s)`;
-      if (cartBtn) cartBtn.textContent = 'Add More';
+      if (inCartLabel) inCartLabel.innerHTML = `<i data-lucide="shopping-cart" style="width:14px;height:14px;"></i> In Cart: ${qty} item(s)`;
+      if (cartBtn) {
+        cartBtn.innerHTML = `<i data-lucide="shopping-cart" style="width:16px;height:16px;"></i> Add to Cart`;
+      }
       if (removeBtn) {
         if (qty <= 1) {
           removeBtn.remove();
-          cartBtn.textContent = 'Add to Cart';
+          if (cartBtn) cartBtn.innerHTML = `<i data-lucide="shopping-cart" style="width:16px;height:16px;"></i> Add to Cart`;
         }
       }
+      lucide.createIcons();
     }
 
     function addToCart() {
       if (!currentProduct) return;
+      if (!currentProduct.is_active) {
+        Swal.fire({ icon: 'info', title: 'Unavailable', text: 'This product is currently unavailable. Please check back later.', confirmButtonColor: '#1A3C2E' });
+        return;
+      }
       
       const inCart = getCartItem();
       const qty = selectedQty;
@@ -221,7 +477,6 @@
       
       saveCart();
       reloadProductDisplay();
-      alert('Added ' + qty + ' item(s) to cart');
     }
 
     function removeFromCart() {
@@ -233,7 +488,6 @@
         saveCart();
         selectedQty = 1;
         reloadProductDisplay();
-        alert('Removed from cart');
       }
     }
 
@@ -246,14 +500,58 @@
       document.getElementById('qty').textContent = selectedQty;
       updateInCartDisplay(cartQty);
       
-      const cartBtn = document.querySelector('.btn-cart');
+      const cartBtn = document.querySelector('.btn-primary');
       if (cartBtn) {
-        cartBtn.textContent = showInCart ? 'Add More' : 'Add to Cart';
+        cartBtn.innerHTML = `<i data-lucide="shopping-cart" style="width:16px;height:16px;"></i> Add to Cart`;
       }
     }
 
+    document.querySelectorAll('.ke-navbar .nav-link').forEach(link => {
+      if (link.href === window.location.href) link.classList.add('active');
+    });
+
     updateCartCount();
     loadSettings().then(loadProduct);
+  </script>
+
+  <!-- Bootstrap 5 JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Lucide init -->
+  <script>lucide.createIcons();</script>
+
+  <!-- Mobile Bottom Navigation -->
+  <nav class="mobile-bottom-nav">
+    <a href="/" class="nav-home">
+      <i data-lucide="home" style="width:20px;height:20px;"></i>
+      <span>Home</span>
+    </a>
+    <a href="/products" class="nav-products">
+      <i data-lucide="package" style="width:20px;height:20px;"></i>
+      <span>Products</span>
+    </a>
+    <a href="/cart" class="nav-cart">
+      <i data-lucide="shopping-cart" style="width:20px;height:20px;"></i>
+      <span>Cart</span>
+      <span id="mobileCartBadge" class="position-absolute translate-middle badge rounded-pill bg-warning" style="font-size:9px;top:2px;left:50%;">0</span>
+    </a>
+    <a href="/about" class="nav-about">
+      <i data-lucide="info" style="width:20px;height:20px;"></i>
+      <span>About</span>
+    </a>
+    <a href="/contact" class="nav-contact">
+      <i data-lucide="phone" style="width:20px;height:20px;"></i>
+      <span>Contact</span>
+    </a>
+  </nav>
+
+  <script>
+    document.querySelectorAll('.mobile-bottom-nav a').forEach(link => {
+      const href = link.getAttribute('href');
+      if (href === window.location.pathname || window.location.pathname.startsWith(href + '/')) {
+        link.classList.add('active');
+      }
+    });
+    lucide.createIcons();
   </script>
 </body>
 </html>

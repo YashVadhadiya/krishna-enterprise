@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cart - Krishna Enterprises</title>
+  <title>Contact Us - Krishna Enterprises</title>
+  <meta name="description" content="Contact Krishna Enterprises for bulk orders, inquiries, and wholesale rates. Reach us via phone, email, or WhatsApp.">
 
   <!-- Bootstrap 5 CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -15,6 +16,7 @@
 
   <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
   <style>
     :root {
@@ -62,6 +64,15 @@
 
     .card { border: 1px solid var(--ke-border); border-radius: 12px; transition: all 0.25s ease; }
     .card:hover { box-shadow: 0 8px 24px rgba(26,60,46,0.10); transform: translateY(-2px); border-color: #C4DDD2; }
+
+    .section-eyebrow {
+      font-size: 12px; font-weight: 500; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--ke-gold); font-family: 'Inter', sans-serif;
+    }
+    .section-divider {
+      width: 40px; height: 2px; background: var(--ke-gold-muted);
+      border-radius: 2px; margin: 10px auto 16px;
+    }
 
     .ke-navbar { background-color: var(--ke-green-dark) !important; }
     .ke-navbar .navbar-brand { font-family: 'Playfair Display', serif; font-weight: 600; color: #fff !important; }
@@ -209,66 +220,129 @@
   <!-- Compact Hero -->
   <section class="ke-hero-compact text-white">
     <div class="container py-4">
-      <h1 class="font-brand text-white">Shopping Cart</h1>
-      <p style="color:#A7F3D0;">Review your items and place your order</p>
+      <h1 class="font-brand text-white">Get in Touch</h1>
+      <p style="color:#A7F3D0;">We're here to help with orders, queries, and wholesale enquiries.</p>
     </div>
   </section>
 
-  <!-- Cart Section -->
-  <div class="container py-5">
-    <div class="card p-4" id="cartSection" style="display:none;">
-      <h2 class="font-brand mb-4">Your Cart Items</h2>
-      <div id="cartItems">
-        <div class="text-center py-4">
-          <i data-lucide="loader-2" class="animate-spin" style="width:32px;height:32px;color:var(--ke-green);"></i>
-          <p class="mt-2 text-muted">Loading cart...</p>
+  <!-- Contact Section -->
+  <section class="py-5">
+    <div class="container py-4">
+      <div class="row g-4">
+        <!-- Contact Info -->
+        <div class="col-12 col-lg-5">
+          <div class="card h-100 p-4 border-start border-3 border-primary">
+            <h3 class="font-brand mb-1">Contact Information</h3>
+            <p class="text-muted mb-4" style="font-size:14px;">Reach us through any of the channels below. We typically respond within a few hours.</p>
+            
+            <div class="d-flex gap-3 mb-4">
+              <div class="d-flex align-items-center justify-content-center flex-shrink-0" style="width:44px;height:44px;background:var(--ke-green-light);border-radius:50%;">
+                <i data-lucide="map-pin" style="width:20px;height:20px;color:var(--ke-green);"></i>
+              </div>
+              <div>
+                <h6 class="fw-semibold mb-1" style="font-size:14px;">Our Address</h6>
+                <p class="mb-0 text-muted" style="font-size:13px;line-height:1.6;" id="contactAddress">Shop No. 12, Stationery Market, Gondal Road, Rajkot, Gujarat — 360001</p>
+              </div>
+            </div>
+            
+            <div class="d-flex gap-3 mb-4">
+              <div class="d-flex align-items-center justify-content-center flex-shrink-0" style="width:44px;height:44px;background:var(--ke-green-light);border-radius:50%;">
+                <i data-lucide="phone" style="width:20px;height:20px;color:var(--ke-green);"></i>
+              </div>
+              <div>
+                <h6 class="fw-semibold mb-1" style="font-size:14px;">Phone / WhatsApp</h6>
+                <p class="mb-0 text-muted" style="font-size:13px;" id="contactPhone">+91 98765 43210</p>
+              </div>
+            </div>
+            
+            <div class="d-flex gap-3 mb-4">
+              <div class="d-flex align-items-center justify-content-center flex-shrink-0" style="width:44px;height:44px;background:var(--ke-green-light);border-radius:50%;">
+                <i data-lucide="mail" style="width:20px;height:20px;color:var(--ke-green);"></i>
+              </div>
+              <div>
+                <h6 class="fw-semibold mb-1" style="font-size:14px;">Email</h6>
+                <p class="mb-0 text-muted" style="font-size:13px;" id="contactEmail">krishnaenterprises@gmail.com</p>
+              </div>
+            </div>
+            
+            <div class="d-flex gap-3 mb-4">
+              <div class="d-flex align-items-center justify-content-center flex-shrink-0" style="width:44px;height:44px;background:var(--ke-green-light);border-radius:50%;">
+                <i data-lucide="clock" style="width:20px;height:20px;color:var(--ke-green);"></i>
+              </div>
+              <div>
+                <h6 class="fw-semibold mb-1" style="font-size:14px;">Business Hours</h6>
+                <p class="mb-0 text-muted" style="font-size:13px;line-height:1.6;">Monday – Saturday: 9:00 AM – 7:00 PM<br>Sunday: Closed</p>
+              </div>
+            </div>
+            
+            <a href="#" id="whatsappBtn" class="btn btn-whatsapp w-100 mt-2">
+              <i data-lucide="message-circle" style="width:18px;height:18px;"></i>
+              Chat With Us on WhatsApp
+            </a>
+            
+            <div class="mt-4 pt-3 border-top" style="border-color:var(--ke-border) !important;">
+              <h6 class="fw-semibold mb-2" style="font-size:13px;">Quick Response</h6>
+              <p class="mb-0 text-muted" style="font-size:13px;">We usually reply within a few hours during business hours.</p>
+            </div>
+          </div>
         </div>
-      </div>
-      
-      <div id="cartForm" class="mt-4 pt-4" style="border-top:2px solid var(--ke-border);">
-        <h3 class="font-brand mb-3">Customer Details</h3>
-        <div class="row g-3">
-          <div class="col-12 col-md-6">
-            <label class="form-label">Your Name *</label>
-            <input type="text" id="customerName" class="form-control" placeholder="Enter your name" required>
-          </div>
-          <div class="col-12 col-md-6">
-            <label class="form-label">Mobile Number *</label>
-            <input type="tel" id="customerMobile" class="form-control" placeholder="Enter mobile number" required>
-          </div>
-          <div class="col-12 col-md-6">
-            <label class="form-label">Shop Name</label>
-            <input type="text" id="customerShop" class="form-control" placeholder="Enter shop name">
-          </div>
-          <div class="col-12 col-md-6">
-            <label class="form-label">Address</label>
-            <input type="text" id="customerAddress" class="form-control" placeholder="Enter address">
-          </div>
-        </div>
-        <div class="d-flex flex-wrap gap-3 mt-4">
-          <a href="/products" class="btn btn-outline-primary">
-            <i data-lucide="arrow-left" style="width:16px;height:16px;"></i>
-            Continue Shopping
-          </a>
-          <button class="btn btn-whatsapp" onclick="sendToWhatsApp()">
-            <i data-lucide="message-circle" style="width:16px;height:16px;"></i>
-            Send Order to WhatsApp
-          </button>
-        </div>
-      </div>
-    </div>
 
-    <div id="emptyCart" class="text-center py-5">
-      <i data-lucide="shopping-cart" style="width:64px;height:64px;color:#C4DDD2;"></i>
-      <h4 class="mt-3 text-muted">Your cart is empty</h4>
-      <p class="text-muted" style="font-size:14px;">Add some products to get started!</p>
-      <a href="/products" class="btn btn-primary mt-2">Browse Products</a>
+        <!-- Enquiry Form -->
+        <div class="col-12 col-lg-7">
+          <div class="card p-4">
+            <h3 class="font-brand mb-4">Send us a Message</h3>
+            <div>
+              <div class="row g-3">
+                <div class="col-12 col-md-6">
+                  <label class="form-label">Full Name *</label>
+                  <input type="text" id="name" class="form-control" placeholder="Enter your name" required>
+                </div>
+                <div class="col-12 col-md-6">
+                  <label class="form-label">Mobile Number *</label>
+                  <input type="tel" id="mobile" class="form-control" placeholder="Enter your phone number" required>
+                </div>
+                <div class="col-12 col-md-6">
+                  <label class="form-label">Shop / Business Name</label>
+                  <input type="text" id="shop" class="form-control" placeholder="Enter your shop or business name">
+                </div>
+                <div class="col-12 col-md-6">
+                  <label class="form-label">City / District</label>
+                  <input type="text" id="city" class="form-control" placeholder="Enter your city or district">
+                </div>
+                <div class="col-12">
+                  <label class="form-label">Your Enquiry *</label>
+                  <textarea id="enquiry" class="form-control" placeholder="Enter your message or enquiry" rows="4" required></textarea>
+                </div>
+              </div>
+              <button type="button" class="btn btn-primary w-100 mt-4" onclick="sendEnquiry()">
+                <i data-lucide="message-circle" style="width:16px;height:16px;"></i>
+                Send Enquiry on WhatsApp
+              </button>
+              <p class="text-muted text-center mt-3" style="font-size:12px;">* Clicking the button will open WhatsApp with your details pre-filled.</p>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-  </div>
+  </section>
+
+  <!-- Map Section -->
+  <section class="py-5">
+    <div class="container">
+      <div class="card p-5 text-center" style="background:var(--ke-surface);">
+        <i data-lucide="map-pin" style="width:32px;height:32px;color:var(--ke-text-muted);" class="mx-auto mb-3"></i>
+        <p class="mb-3" style="font-size:15px;" id="mapAddress">Shop No. 12, Stationery Market, Gondal Road, Rajkot, Gujarat — 360001</p>
+        <a href="https://www.google.com/maps/search/Rajkot+Gujarat" target="_blank" class="btn btn-outline-primary">
+          <i data-lucide="map-pin" style="width:16px;height:16px;"></i>
+          Open in Google Maps
+        </a>
+      </div>
+    </div>
+  </section>
 
   <!-- Toast -->
   <div id="toast" class="position-fixed bottom-0 start-50 translate-middle-x bg-success text-white px-4 py-2 rounded shadow-lg" style="display:none;z-index:2000;">
-    Cart updated
+    Enquiry sent! We'll get back to you soon.
   </div>
 
   <!-- Footer -->
@@ -326,128 +400,7 @@
   <script>
     const CART_KEY = 'ke_cart';
     let cart = JSON.parse(localStorage.getItem(CART_KEY) || '[]');
-    let whatsappNumber = '';
-
-    function showToast(message) {
-      const toast = document.getElementById('toast');
-      toast.textContent = message;
-      toast.style.display = 'block';
-      setTimeout(() => toast.style.display = 'none', 2000);
-    }
-
-    function updateCart() {
-      localStorage.setItem(CART_KEY, JSON.stringify(cart));
-      renderCart();
-    }
-
-    async function loadSettings() {
-      try {
-        const res = await fetch('/api/settings');
-        const data = await res.json();
-        whatsappNumber = data.whatsapp_number || '';
-      } catch (err) {
-        console.error(err);
-      }
-    }
-
-    function renderCart() {
-      const cartItems = document.getElementById('cartItems');
-      const cartSection = document.getElementById('cartSection');
-      const emptyCart = document.getElementById('emptyCart');
-      const cartForm = document.getElementById('cartForm');
-      
-      if (!cart.length) {
-        cartItems.innerHTML = '';
-        cartSection.style.display = 'none';
-        emptyCart.style.display = 'block';
-        updateCartCount();
-        lucide.createIcons();
-        return;
-      }
-      
-      emptyCart.style.display = 'none';
-      cartSection.style.display = 'block';
-      cartForm.style.display = 'block';
-      
-      cartItems.innerHTML = cart.map(p => {
-        const images = typeof p.images === 'string' ? JSON.parse(p.images) : p.images;
-        const imgSrc = images.length ? images[0] : '';
-        return `
-          <div class="d-flex align-items-center gap-3 py-3 border-bottom" style="border-color:var(--ke-border) !important;">
-            ${imgSrc ? `<img src="${imgSrc}" alt="${p.name}" class="rounded" style="width:80px;height:80px;object-fit:cover;">` : `<div class="rounded bg-light d-flex align-items-center justify-content-center" style="width:80px;height:80px;"><i data-lucide="image" style="width:24px;height:24px;color:#C4DDD2;"></i></div>`}
-            <div class="flex-grow-1">
-              <h6 class="mb-1 fw-semibold">${p.name}</h6>
-              <p class="mb-0 text-muted" style="font-size:12px;"><i data-lucide="box" style="width:12px;height:12px;"></i> SKU: ${p.sku || 'N/A'}</p>
-            </div>
-            <div class="d-flex align-items-center gap-2">
-              <button class="btn btn-outline-secondary btn-sm" style="width:32px;height:32px;padding:0;" onclick="changeQty(${p.id}, -1)">−</button>
-              <span class="fw-semibold" style="min-width:30px;text-align:center;">${p.quantity}</span>
-              <button class="btn btn-outline-secondary btn-sm" style="width:32px;height:32px;padding:0;" onclick="changeQty(${p.id}, 1)">+</button>
-            </div>
-            <button class="btn btn-outline-danger btn-sm" onclick="removeFromCart(${p.id})">
-              <i data-lucide="trash-2" style="width:14px;height:14px;"></i>
-            </button>
-          </div>
-        `;
-      }).join('');
-      
-      updateCartCount();
-      lucide.createIcons();
-    }
-
-    function changeQty(id, delta) {
-      const item = cart.find(p => p.id === id);
-      if (item) {
-        item.quantity += delta;
-        if (item.quantity < 1) item.quantity = 1;
-        updateCart();
-        showToast('Cart updated');
-      }
-    }
-
-    function removeFromCart(id) {
-      cart = cart.filter(p => p.id !== id);
-      updateCart();
-      showToast('Item removed');
-    }
-
-    function sendToWhatsApp() {
-      const name = document.getElementById('customerName').value.trim();
-      const mobile = document.getElementById('customerMobile').value.trim();
-      const shop = document.getElementById('customerShop').value.trim();
-      const address = document.getElementById('customerAddress').value.trim();
-      
-      if (!name || !mobile) {
-        showToast('Please enter name and mobile number');
-        return;
-      }
-      
-      if (!whatsappNumber) {
-        showToast('WhatsApp not configured. Contact admin.');
-        return;
-      }
-      
-      if (!cart.length) {
-        showToast('Cart is empty');
-        return;
-      }
-      
-      let message = `*New Order from Krishna Enterprises*\n\n`;
-      message += `*Customer Details:*\n`;
-      message += `Name: ${name}\n`;
-      message += `Mobile: ${mobile}\n`;
-      if (shop) message += `Shop Name: ${shop}\n`;
-      if (address) message += `Address: ${address}\n\n`;
-      message += `*Order Details:*\n`;
-      
-      cart.forEach((p, i) => {
-        message += `${i+1}. ${p.name} (SKU: ${p.sku}) - Qty: ${p.quantity}\n`;
-      });
-      
-      message += `\nPlease share the total price and delivery details.`;
-      
-      window.open(`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`, '_blank');
-    }
+    let whatsappNumber = '919876543210';
 
     function updateCartCount() {
       const total = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
@@ -457,11 +410,74 @@
       if (mobileBadge) mobileBadge.textContent = total;
     }
 
+    async function loadSettings() {
+      try {
+        const res = await fetch('/api/settings');
+        const data = await res.json();
+        if (data.whatsapp_number) whatsappNumber = data.whatsapp_number;
+        
+        if (data.address) {
+          document.getElementById('contactAddress').textContent = data.address;
+          document.getElementById('mapAddress').textContent = data.address;
+        }
+        if (data.contact_phone) {
+          document.getElementById('contactPhone').textContent = data.contact_phone;
+        }
+        if (data.contact_email) {
+          document.getElementById('contactEmail').innerHTML = `<a href="mailto:${data.contact_email}" class="text-decoration-none" style="color:inherit;">${data.contact_email}</a>`;
+        }
+        
+        document.getElementById('whatsappBtn').href = 'https://wa.me/' + whatsappNumber;
+        lucide.createIcons();
+      } catch (err) {
+        console.error(err);
+        document.getElementById('whatsappBtn').href = 'https://wa.me/' + whatsappNumber;
+        lucide.createIcons();
+      }
+    }
+
+    function sendEnquiry() {
+      const name = document.getElementById('name').value.trim();
+      const mobile = document.getElementById('mobile').value.trim();
+      const shop = document.getElementById('shop').value.trim();
+      const city = document.getElementById('city').value.trim();
+      const enquiry = document.getElementById('enquiry').value.trim();
+      
+      if (!name || !mobile || !enquiry) {
+        Swal.fire({ icon: 'warning', title: 'Required Fields', text: 'Please fill in name, mobile number and enquiry message.', confirmButtonColor: '#1A3C2E' });
+        return;
+      }
+      
+      let message = `*New Enquiry from Krishna Enterprises Website*\n\n`;
+      message += `*Name:* ${name}\n`;
+      message += `*Mobile:* ${mobile}\n`;
+      if (shop) message += `*Shop:* ${shop}\n`;
+      if (city) message += `*City:* ${city}\n`;
+      message += `\n*Message:*\n${enquiry}`;
+      
+      window.open('https://wa.me/' + whatsappNumber + '?text=' + encodeURIComponent(message), '_blank');
+      
+      showToast('Enquiry sent! We will get back to you soon.');
+      document.getElementById('name').value = '';
+      document.getElementById('mobile').value = '';
+      document.getElementById('shop').value = '';
+      document.getElementById('city').value = '';
+      document.getElementById('enquiry').value = '';
+    }
+
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      toast.textContent = message;
+      toast.style.display = 'block';
+      setTimeout(() => toast.style.display = 'none', 3000);
+    }
+
     document.querySelectorAll('.ke-navbar .nav-link').forEach(link => {
       if (link.href === window.location.href) link.classList.add('active');
     });
 
-    loadSettings().then(renderCart);
+    updateCartCount();
+    loadSettings();
   </script>
 
   <!-- Bootstrap 5 JS -->
